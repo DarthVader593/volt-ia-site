@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07080A">
+<title>Diagnóstico Volt IA — onde a IA entra no seu negócio</title>
+<meta name="description" content="Diagnóstico gratuito em 12 perguntas: descubra onde o seu negócio perde tempo e cliente e por onde começar com IA.">
+<style>
+@font-face{font-family:"Unbounded";src:url("assets/fonts/Unbounded-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Unbounded";src:url("assets/fonts/Unbounded-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url("assets/fonts/JetBrainsMono-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+
+:root{
+  --void:#07080A;--grafite:#121418;--linha:#262A31;--volt:#C8FF2E;--sinal:#F2F4EF;--dado:#8B929C;--brasa:#FF5A1F;
+  --panel:rgba(7,8,10,.48);--radius:14px;--max:460px;
+  --fd:"Unbounded",system-ui,sans-serif;--ft:"Space Grotesk",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;height:100%}
+body{font-family:var(--ft);background:var(--void);color:var(--sinal);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;background:#050608}
+.travel-veil{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .25s ease;
+  background:radial-gradient(ellipse at 50% 45%,rgba(200,255,46,.06) 0%,transparent 42%,rgba(5,6,8,.18) 100%);
+  mix-blend-mode:screen}
+.travel-veil.on{opacity:1}
+.core-hud{
+  position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:4;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transition:opacity .5s;
+  filter:drop-shadow(0 0 12px rgba(200,255,46,.35));
+}
+.core-hud.visible{opacity:1}
+.core-hud .lab{font:500 10px/1 var(--fm);letter-spacing:.14em;color:var(--volt);text-transform:uppercase}
+.core-hud .pct{font:500 10px/1 var(--fm);color:var(--dado);letter-spacing:.06em}
+.layout{
+  position:relative;z-index:2;display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(280px,var(--max)) minmax(0,1fr);
+  gap:12px;align-items:start;min-height:100vh;padding:56px 12px 48px;
+}
+.rail{position:sticky;top:70px;min-height:40vh;pointer-events:none}
+.rail-hint{
+  font:500 10px/1.3 var(--fm);letter-spacing:.1em;text-transform:uppercase;color:rgba(200,255,46,.45);
+  writing-mode:vertical-rl;transform:rotate(180deg);margin:24px auto;opacity:.7;
+}
+.main{min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.logo{height:30px;width:auto;display:block;filter:drop-shadow(0 0 8px rgba(200,255,46,.3))}
+.badge{font-family:var(--fm);font-size:10px;letter-spacing:.04em;color:var(--dado);border:1px solid var(--linha);
+  background:rgba(18,20,24,.75);padding:5px 9px;border-radius:999px;white-space:nowrap}
+ .card.traveling{opacity:0.78;transform:scale(0.96);transition:opacity .45s,transform .45s}
+.card{transition:opacity .4s,transform .4s;
+
+  background:var(--panel);border:1px solid rgba(200,255,46,.18);border-radius:18px;padding:22px 20px;
+  box-shadow:0 0 0 1px rgba(200,255,46,.04),0 20px 50px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.04);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;overflow:hidden;
+}
+.card::before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,255,46,.55),transparent)}
+.kicker{font-family:var(--fm);font-size:11px;color:var(--volt);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+h1{font-family:var(--fd);font-weight:700;font-size:clamp(1.25rem,3.6vw,1.7rem);line-height:1.15;margin-bottom:10px}
+h2{font-family:var(--fd);font-weight:700;font-size:clamp(1.05rem,3vw,1.35rem);line-height:1.2;margin-bottom:8px}
+.lead{color:var(--dado);font-size:.95rem;line-height:1.5;margin-bottom:16px}
+.progress-wrap{margin:2px 0 16px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:.85rem;color:var(--dado)}
+.progress-meta strong{color:var(--sinal);font-weight:500}
+.bar{height:7px;background:var(--linha);border-radius:999px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--volt),#9BE01A);border-radius:999px;transition:width .35s ease;box-shadow:0 0 12px rgba(200,255,46,.5)}
+.q-label{font-size:.88rem;color:var(--dado);margin-bottom:4px}
+.q-text{font-family:var(--fd);font-weight:500;font-size:1.05rem;line-height:1.35;margin-bottom:14px}
+.options{display:grid;gap:8px}
+.opt{width:100%;text-align:left;cursor:pointer;border:1px solid var(--linha);background:rgba(18,20,24,.88);color:var(--sinal);
+  border-radius:11px;padding:12px 14px;font:500 .95rem var(--ft);line-height:1.3;transition:border-color .15s,background .15s,box-shadow .15s}
+.opt:hover{border-color:rgba(200,255,46,.45);background:rgba(200,255,46,.05)}
+.opt:focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+.opt.selected{border-color:var(--volt);background:rgba(200,255,46,.1);box-shadow:inset 0 0 0 1px rgba(200,255,46,.3),0 0 18px rgba(200,255,46,.1)}
+.opt .opt-k{font-family:var(--fm);font-size:.72rem;color:var(--volt);display:block;margin-bottom:3px}
+textarea,input[type="text"],input[type="email"],input[type="tel"]{
+  width:100%;border-radius:11px;border:1px solid var(--linha);background:rgba(18,20,24,.92);color:var(--sinal);padding:12px 14px;font:400 .95rem var(--ft)}
+textarea{min-height:96px;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--volt);outline-offset:1px}
+.field{margin-bottom:12px}
+.field label{display:block;font:500 .82rem var(--ft);margin-bottom:5px;color:var(--sinal)}
+.field .hint{font-size:.74rem;color:var(--dado);margin-top:3px}
+.field.error input,.field.error textarea{border-color:var(--brasa)}
+.err{font-size:.78rem;color:#FF8A5C;margin-top:5px;min-height:1.1em}
+.err[hidden]{display:none}
+.consent{display:flex;gap:10px;align-items:flex-start;margin:14px 0 6px;padding:12px;border:1px solid var(--linha);border-radius:11px;background:rgba(18,20,24,.7)}
+.consent input{margin-top:2px;width:18px;height:18px;accent-color:var(--volt);flex-shrink:0}
+.consent label{font-size:.84rem;color:var(--dado);line-height:1.4}
+.consent a{color:var(--volt)}
+.actions{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.btn{appearance:none;border:0;cursor:pointer;border-radius:999px;padding:12px 18px;font:700 .9rem var(--ft)}
+.btn-primary{background:var(--volt);color:var(--void);box-shadow:0 0 22px rgba(200,255,46,.28)}
+.btn-primary:hover{filter:brightness(1.05)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;filter:none;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--sinal);border:1px solid var(--linha)}
+.btn-draft{background:transparent;color:var(--volt);border:1px dashed rgba(200,255,46,.55)}
+.q-feedback{font-size:.86rem;color:var(--sinal);line-height:1.45;margin:0 0 12px;padding:10px 12px;border-left:2px solid var(--volt);background:rgba(200,255,46,.06);border-radius:0 10px 10px 0}
+.prio span{display:block}
+.prio .prio-c{margin-bottom:4px}
+.prio b{color:var(--sinal);font-weight:500}
+.btn-draft::after{content:"em breve";display:block;font:500 .7rem var(--fm);color:var(--dado);margin-top:3px;letter-spacing:0}
+.btn:focus-visible{outline:2px solid var(--volt);outline-offset:3px}
+.note{font-size:.84rem;color:var(--dado);line-height:1.4;margin-top:12px}
+.hidden{display:none!important}
+.receive{margin-top:18px;padding-top:14px;border-top:1px solid var(--linha)}
+.receive-title{font-family:var(--fm);font-size:11px;color:var(--volt);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.receive-list{list-style:none;display:grid;gap:8px}
+.receive-list li{border:1px solid var(--linha);border-radius:10px;padding:10px 12px;background:rgba(18,20,24,.7);color:var(--dado);font-size:.88rem;line-height:1.35}
+.receive-list li strong{color:var(--sinal);font-weight:500;display:block;margin-bottom:2px}
+.result-level{display:inline-flex;align-items:center;gap:8px;background:rgba(200,255,46,.1);border:1px solid rgba(200,255,46,.35);color:var(--volt);border-radius:999px;padding:7px 12px;font-family:var(--fm);font-size:.8rem;margin:6px 0 12px}
+.priorities{display:grid;gap:8px;margin:12px 0 6px}
+.prio{border:1px solid var(--linha);border-radius:11px;padding:12px 14px;background:rgba(18,20,24,.72)}
+.prio strong{display:block;font-family:var(--fd);font-weight:500;font-size:.9rem;margin-bottom:3px}
+.prio span{color:var(--dado);font-size:.88rem;line-height:1.35}
+.cta-box{margin:18px 0;padding:14px;border-radius:14px;border:1px solid rgba(200,255,46,.28);background:linear-gradient(135deg,rgba(200,255,46,.08),rgba(18,20,24,.35))}
+.cta-box p{color:var(--dado);font-size:.9rem;line-height:1.4;margin:6px 0 12px}
+.sols{display:grid;gap:10px;margin-top:10px}
+.sol{border:1px solid var(--linha);border-radius:12px;padding:14px;background:rgba(7,8,10,.5);opacity:0;transform:translateY(8px);transition:opacity .45s,transform .45s,border-color .4s,box-shadow .4s}
+.sol.on{opacity:1;transform:none;border-color:rgba(200,255,46,.4);box-shadow:0 0 20px rgba(200,255,46,.12)}
+.sol h3{font-family:var(--fd);font-weight:500;font-size:.95rem;margin-bottom:5px}
+.sol p{color:var(--dado);font-size:.86rem;line-height:1.35;margin-bottom:8px}
+.price{font-family:var(--fm);font-size:.72rem;color:var(--dado);border-top:1px solid var(--linha);padding-top:8px}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0}
+.tag{font-family:var(--fm);font-size:.68rem;color:var(--sinal);background:rgba(38,42,49,.9);border:1px solid var(--linha);border-radius:999px;padding:3px 7px}
+#building-stage{width:100%;height:260px;border-radius:12px;border:1px solid rgba(200,255,46,.2);margin:10px 0 8px;background:rgba(0,0,0,.35);display:block}
+.building-caption{font:500 10px/1 var(--fm);color:var(--dado);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.lgpd{margin-top:22px;padding-top:14px;border-top:1px solid var(--linha);font-size:.76rem;color:var(--dado);line-height:1.45}
+.foot{margin-top:14px;font-size:.74rem;color:var(--dado);text-align:center}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;padding:52px 12px 40px}
+  .rail{display:none}
+}
+@media (max-width:520px){
+   .card.traveling{opacity:0.78;transform:scale(0.96);transition:opacity .45s,transform .45s}
+.card{transition:opacity .4s,transform .4s;
+padding:18px 14px;border-radius:14px}
+  .logo{height:26px}
+  .actions{flex-direction:column}
+  .btn{width:100%}
+  #building-stage{height:200px}
+}
+#screen-result,#screen-lead{background:rgba(7,8,10,.86)}
+.motion-toggle{cursor:pointer;color:var(--sinal)}
+.motion-toggle:hover{border-color:rgba(200,255,46,.45)}
+.motion-toggle[aria-pressed="true"]{color:var(--volt);border-color:rgba(200,255,46,.55)}
+.motion-toggle:focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+.send-status{margin:4px 0 14px;padding:10px 12px;border-radius:10px;border:1px solid var(--linha);background:rgba(18,20,24,.75);font-size:.84rem;color:var(--dado);line-height:1.4}
+.send-status.ok{border-color:rgba(200,255,46,.35)}
+.send-status.warn{border-color:rgba(255,90,31,.5)}
+.send-status button{margin-top:8px;padding:8px 14px;font-size:.8rem}
+@media (prefers-reduced-motion: reduce){
+  .sol{opacity:1;transform:none}
+  .travel-veil{display:none}
+}
+html.reduce-motion .sol{opacity:1;transform:none}
+html.reduce-motion .travel-veil{display:none}
+html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{transition:none!important;animation:none!important}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="travel-veil" id="travel-veil" aria-hidden="true"></div>
+<div class="core-hud" id="core-hud" aria-hidden="true">
+  <div class="lab">Núcleo Volt · IA</div>
+  <div class="pct" id="core-progress">sistema em espera</div>
+</div>
+
+<div class="layout">
+  <aside class="rail" aria-hidden="true"><div class="rail-hint">corredor ← salas</div></aside>
+  <div class="main">
+    <header class="topbar">
+      <a href="../" aria-label="Volt IA — início"><img class="logo" src="assets/logo/lockup.svg" alt="Volt IA"></a>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="badge">versão de lançamento</span>
+        <button class="badge motion-toggle" type="button" id="btn-motion" aria-pressed="false">Reduzir movimento</button>
+      </div>
+    </header>
+
+    <section id="screen-start" class="card" data-screen="start">
+      <div class="kicker">Diagnóstico gratuito · para donos de PME e lojas</div>
+      <h1>Quanto do seu dia ainda depende só de você?</h1>
+      <p class="lead">Mensagem sem resposta, agenda furada, caixa no escuro, equipe esperando você decidir. Em 12 perguntas o núcleo de IA percorre o seu prédio sala por sala e mostra <strong style="color:var(--sinal)">onde o seu negócio está vazando tempo e cliente</strong> — e por onde começar.</p>
+      <div class="actions"><button class="btn btn-primary" type="button" id="btn-start">Começar meu diagnóstico</button></div>
+      <p class="note">Leva poucos minutos. Sem cadastro para começar. Sem promessa de renda — aqui a gente fala de rotina, não de milagre.</p>
+      <div class="receive" aria-label="O que você recebe">
+        <div class="receive-title">No fim, você leva</div>
+        <ul class="receive-list">
+          <li><strong>Seu nível real com IA</strong> — Iniciante, Intermediário ou Avançado, e o que estudar primeiro.</li>
+          <li><strong>3 prioridades com o seu nome</strong> — tiradas das suas respostas, não de uma lista genérica.</li>
+          <li><strong>As salas que a IA ocuparia</strong> — até 3 soluções do catálogo Volt IA que combinam com o seu caso.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="screen-quiz" class="card hidden" data-screen="quiz">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span>Pergunta <strong id="q-num">1</strong> de <strong>12</strong></span>
+          <span id="q-block">Perfil</span>
+        </div>
+        <div class="bar" aria-hidden="true"><i id="progress-fill"></i></div>
+      </div>
+      <p class="q-feedback hidden" id="q-feedback" aria-live="polite"></p>
+      <div class="q-label" id="q-label">Bloco A</div>
+      <div class="q-text" id="q-text"></div>
+      <div id="q-body"></div>
+      <div class="actions">
+        <button class="btn btn-ghost" type="button" id="btn-back">Voltar</button>
+        <button class="btn btn-primary" type="button" id="btn-next" disabled>Próxima</button>
+      </div>
+    </section>
+
+    <section id="screen-lead" class="card hidden" data-screen="lead" aria-labelledby="lead-title">
+      <div class="kicker">Porta do núcleo · diagnóstico pronto</div>
+      <h2 id="lead-title"><span id="lead-greet">Seu prédio já foi mapeado.</span></h2>
+      <p class="lead" id="lead-lead">O núcleo cruzou as suas 12 respostas e já sabe quais salas acendem primeiro. Seu resultado fica pronto em segundos. Só precisamos saber para onde enviar.</p>
+      <form id="lead-form" novalidate>
+        <div class="field" id="field-nome">
+          <label for="lead-nome">Nome completo</label>
+          <input type="text" id="lead-nome" name="nome" autocomplete="name" required maxlength="120" aria-describedby="err-nome">
+          <div class="err" id="err-nome" role="alert" hidden></div>
+        </div>
+        <div class="field" id="field-whatsapp">
+          <label for="lead-whatsapp">WhatsApp (Brasil)</label>
+          <input type="tel" id="lead-whatsapp" name="whatsapp" autocomplete="tel" inputmode="tel" required maxlength="20" placeholder="(11) 98765-4321" aria-describedby="hint-wa err-whatsapp">
+          <div class="hint" id="hint-wa">DDD + número com 10 ou 11 dígitos. Aceita +55.</div>
+          <div class="err" id="err-whatsapp" role="alert" hidden></div>
+        </div>
+        <div class="field" id="field-email">
+          <label for="lead-email">E-mail</label>
+          <input type="email" id="lead-email" name="email" autocomplete="email" required maxlength="160" placeholder="voce@empresa.com.br" aria-describedby="err-email">
+          <div class="err" id="err-email" role="alert" hidden></div>
+        </div>
+        <div class="consent" id="field-consent">
+          <input type="checkbox" id="lead-consent" name="consent" required aria-describedby="err-consent">
+          <label for="lead-consent">Autorizo a Volt IA / Darth Lab a usar meu nome, WhatsApp e e-mail para me enviar este diagnóstico e ofertas relacionadas aos produtos da Volt IA. Posso pedir a exclusão dos meus dados a qualquer momento. Li a <a href="../privacidade/" target="_blank" rel="noopener">política de privacidade (rascunho)</a>.</label>
+        </div>
+        <div class="err" id="err-consent" role="alert" hidden></div>
+        <div class="actions">
+          <button class="btn btn-ghost" type="button" id="btn-lead-back">Voltar</button>
+          <button class="btn btn-primary" type="submit" id="btn-lead-submit">Liberar diagnóstico</button>
+        </div>
+        <div id="turnstile-box" style="margin-top:12px"></div>
+        <p class="note">Diagnóstico grátis. Sem spam: usamos seus dados só para o diagnóstico e ofertas da Volt IA, e você sai quando quiser.</p>
+      </form>
+    </section>
+
+    <section id="screen-result" class="card hidden" data-screen="result">
+      <div class="kicker">Núcleo acordado · seu diagnóstico</div>
+      <h2 id="res-title">Nível indicado</h2>
+      <div class="result-level">
+        <span id="res-level">Iniciante</span>
+        <span class="score-pill">· conhecimento <span id="res-score">0</span>/12</span>
+      </div>
+      <p class="lead" id="res-blurb"></p>
+      <div class="cta-box" id="res-mirror" style="margin-top:4px">
+        <div class="kicker">O que você nos contou</div>
+        <p id="res-mirror-text" style="margin-bottom:0"></p>
+      </div>
+      <div class="send-status hidden" id="send-status" role="status"></div>
+
+      <div class="building-caption">Prédio · salas que a IA ocuparia</div>
+      <canvas id="building-stage" width="560" height="220" aria-label="Prédio com salas acendendo"></canvas>
+
+      <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:.95rem;margin-top:14px">3 prioridades para começar</h3>
+      <div class="priorities" id="res-priorities"></div>
+      <div class="tag-row" id="res-tags"></div>
+
+      <div class="cta-box">
+        <div class="kicker">Próximo passo</div>
+        <p id="res-urgency" style="color:var(--sinal);margin:4px 0 8px"></p>
+        <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:1rem">Curso de entrada — R$&nbsp;97</h3>
+        <p id="res-course">Compra única. Obrigatório para contratar qualquer solução do catálogo. Sem promessa de faturamento.</p>
+        <button class="btn btn-draft" type="button" id="btn-cta" aria-disabled="true">Quero o curso R$&nbsp;97</button>
+      </div>
+
+      <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:.95rem">As salas que acenderam para você</h3>
+      <p class="note" style="margin-top:4px">Mensalidade sob consulta. Toda solução começa pelo curso — é ele que garante que você sabe o que está contratando.</p>
+      <div class="sols" id="res-sols"></div>
+
+      <div class="lgpd">
+        <strong style="color:var(--sinal)">Aviso LGPD (rascunho):</strong>
+        com o seu consentimento, nome, WhatsApp e e-mail são usados só para enviar este diagnóstico e ofertas da Volt IA / Darth Lab. Não vendemos nem repassamos seus dados. Você pode pedir acesso, correção ou exclusão a qualquer momento. Veja a <a href="../privacidade/" style="color:var(--volt)">política de privacidade (rascunho)</a>.
+      </div>
+      <div class="actions"><button class="btn btn-ghost" type="button" id="btn-restart">Refazer diagnóstico</button></div>
+    </section>
+
+    <p class="foot">Volt IA · holding Darth Lab · peça-modelo quiz-v2 · 09/11/2026</p>
+  </div>
+  <aside class="rail" aria-hidden="true"><div class="rail-hint">núcleo →</div></aside>
+</div>
+
+<script>
+(function(){
+  const CATALOG = {
+    atendimento: { id:"S01", nome:"Agente de atendimento Nexor", desc:"Responde na hora, qualifica e passa para você só quem está pronto para comprar — inclusive de madrugada e no fim de semana.", room:"Atendimento" },
+    crm: { id:"S07", nome:"CRM leve", desc:"Todo contato vira oportunidade com dono e próximo passo. Ninguém mais some no meio da conversa.", room:"CRM" },
+    posts: { id:"S04", nome:"Gestor de posts", desc:"Calendário e rascunhos prontos para aprovar. Você para de improvisar post às 23h.", room:"Conteúdo" },
+    criativos: { id:"S03", nome:"Gestor de criativos", desc:"Variações de peça com a sua marca a partir de um briefing — sempre com revisão humana antes de ir ao ar.", room:"Criativos" },
+    trafego: { id:"S02", nome:"Gestor de tráfego", desc:"Rotina semanal de leitura e ajuste das campanhas, assistida por IA, na sua própria conta de anúncios.", room:"Tráfego" },
+    financeiro: { id:"S05", nome:"Sistema financeiro", desc:"Entradas, saídas e contas a pagar numa tela só. Você decide olhando o caixa, não a memória.", room:"Financeiro" },
+    agenda: { id:"S06", nome:"Sistema de agendamento", desc:"Agenda, confirmação e lembrete automáticos para quem vive de horário marcado.", room:"Agenda" },
+    erp: { id:"S08", nome:"ERP leve para PME", desc:"Estoque, pedidos e financeiro básico conversando entre si — com escopo fechado, sem projeto infinito.", room:"Operação" },
+    implantacao: { id:"S10", nome:"Pacote implantação “nós montamos”", desc:"A equipe Volt IA configura e entrega a solução com você, seguindo checklist. Você não precisa virar técnico.", room:"Implantação" },
+    comunidade: { id:"S09", nome:"Comunidade de membros", desc:"Templates, atualizações e gente resolvendo os mesmos problemas que você.", room:"Comunidade" }
+  };
+  const ROOM_ORDER = ["Atendimento","CRM","Conteúdo","Criativos","Tráfego","Financeiro","Agenda","Operação","Implantação","Comunidade"];
+  const ROOM_TAGS = {
+    Atendimento:"atendimento", CRM:"crm", "Conteúdo":"posts", Criativos:"criativos",
+    "Tráfego":"trafego", Financeiro:"financeiro", Agenda:"agenda", "Operação":"erp",
+    "Implantação":"implantacao", Comunidade:"comunidade"
+  };
+
+  const QUESTIONS = [
+    {id:"q1", block:"A — Perfil", blockShort:"Perfil", text:"Para começar: que tipo de negócio você toca?", type:"single",
+      options:[{k:"A",label:"Loja física",tags:{}},{k:"B",label:"E-commerce / loja on-line",tags:{trafego:1}},{k:"C",label:"Prestação de serviços",tags:{agenda:1}},{k:"D",label:"Restaurante, delivery ou food",tags:{atendimento:1}},{k:"E",label:"Clínica, salão ou estética",tags:{agenda:2}},{k:"F",label:"Outro",tags:{}}]},
+    {id:"q2", block:"A — Perfil", blockShort:"Perfil", text:"Quantas pessoas fazem o negócio rodar, contando com você?", type:"single",
+      options:[{k:"A",label:"Só eu — faço tudo",tags:{}},{k:"B",label:"2 a 5",tags:{}},{k:"C",label:"6 a 20",tags:{crm:1,erp:1}},{k:"D",label:"21 ou mais",tags:{crm:2,erp:2}}]},
+    {id:"q3", block:"A — Perfil", blockShort:"Perfil", text:"De onde vem a maior parte dos seus clientes hoje?", type:"single",
+      options:[{k:"A",label:"WhatsApp",tags:{atendimento:1}},{k:"B",label:"Instagram",tags:{posts:1,criativos:1}},{k:"C",label:"Indicação / boca a boca",tags:{crm:1}},{k:"D",label:"Google",tags:{trafego:1}},{k:"E",label:"Movimento da loja física",tags:{}},{k:"F",label:"Outro",tags:{}}]},
+    {id:"q4", block:"B — Onde dói", blockShort:"Onde dói", text:"Seja sincero: o que mais rouba as suas horas na semana? (até 2)", type:"multi", max:2,
+      options:[{k:"A",label:"Respondo cliente o dia inteiro — de madrugada também",tags:{atendimento:3}},{k:"B",label:"Pensar e fazer post",tags:{posts:3,criativos:2}},{k:"C",label:"Correr atrás de quem pediu orçamento e sumiu",tags:{crm:2,atendimento:1}},{k:"D",label:"Conta, boleto e planilha",tags:{financeiro:3}},{k:"E",label:"Marcar, remarcar e confirmar horário",tags:{agenda:3}},{k:"F",label:"Equipe que depende de mim para tudo",tags:{crm:1,erp:2}}]},
+    {id:"q5", block:"B — Onde dói", blockShort:"Onde dói", text:"Onde o cliente (ou o dinheiro) some no seu negócio?", type:"single",
+      options:[{k:"A",label:"Cliente pergunta, demora a resposta e some",tags:{atendimento:3,crm:2}},{k:"B",label:"Chega pouca gente nova",tags:{trafego:3,criativos:1}},{k:"C",label:"Meus anúncios e posts não chamam atenção",tags:{criativos:3,posts:1}},{k:"D",label:"Não sei direito quanto entra e quanto sai",tags:{financeiro:3}},{k:"E",label:"Falta, atraso e horário vago na agenda",tags:{agenda:3}},{k:"F",label:"Não sei dizer — e isso me preocupa",tags:{}}]},
+    {id:"q6", block:"B — Onde dói", blockShort:"Onde dói", text:"Hoje, o que segura o negócio no digital? (até 2)", type:"multi", max:2,
+      options:[{k:"A",label:"WhatsApp Business",tags:{atendimento:1}},{k:"B",label:"Planilha",tags:{financeiro:1}},{k:"C",label:"Sistema de caixa / PDV",tags:{financeiro:1}},{k:"D",label:"Um CRM",tags:{crm:1}},{k:"E",label:"Um ERP",tags:{erp:1}},{k:"F",label:"Quase nada — está tudo na minha cabeça",tags:{}}]},
+    {id:"q10", block:"B — Onde dói", blockShort:"Onde dói", text:"O que você já tentou para resolver isso?", type:"single",
+      options:[{k:"A",label:"Nada ainda — não sobra tempo nem para pensar nisso",tags:{implantacao:2}},{k:"B",label:"Testei um aplicativo sozinho e larguei",tags:{}},{k:"C",label:"Paguei alguém e não resolveu",tags:{}},{k:"D",label:"Já tenho algo funcionando e quero ir além",tags:{}}]},
+    {id:"q7", block:"C — Você e a IA", blockShort:"Conhecimento", text:"Você já usou ChatGPT, Claude, Gemini ou similar para trabalhar?", type:"single", scoreKey:"knowledge",
+      options:[{k:"A",label:"Nunca usei",score:0},{k:"B",label:"Testei por curiosidade",score:2},{k:"C",label:"Uso de vez em quando",score:4},{k:"D",label:"Uso todo dia",score:6}]},
+    {id:"q8", block:"C — Conhecimento", blockShort:"Conhecimento", text:"Alguma tarefa do seu negócio já roda sozinha, sem você?", type:"single", scoreKey:"knowledge",
+      options:[{k:"A",label:"Não, nenhuma",score:0},{k:"B",label:"Tentei, mas abandonei",score:2},{k:"C",label:"Tenho algo simples funcionando",score:4},{k:"D",label:"Tenho um fluxo completo rodando",score:6}]},
+    {id:"q9", block:"C — Conhecimento", blockShort:"Conhecimento", text:"Se a IA resolvesse UMA coisa no seu negócio amanhã, qual seria?", type:"text", placeholder:"Ex.: parar de perder cliente no WhatsApp quando estou atendendo na loja"},
+    {id:"q11", block:"D — Como resolver", blockShort:"Como resolver", text:"Como você prefere dar o primeiro passo?", type:"single", intent:true,
+      options:[{k:"A",label:"Quero aprender e fazer eu mesmo",intent:"solo",tags:{comunidade:2}},{k:"B",label:"Quero que alguém monte e me entregue pronto",intent:"done",tags:{implantacao:3}},{k:"C",label:"Os dois: entender o que estou contratando e ter quem monte",intent:"both",tags:{implantacao:2,comunidade:1}}]},
+    {id:"q12", block:"D — Como resolver", blockShort:"Como resolver", text:"Última: quando você quer resolver isso?", type:"single",
+      options:[{k:"A",label:"Esta semana — já passou da hora"},{k:"B",label:"Este mês"},{k:"C",label:"Só estou curioso por enquanto"}]}
+  ];
+  /* Micro-feedback ao entrar em cada bloco (qualitativo, sem estatística). */
+  function blockFeedback(qid){
+    const a=(id)=>state.answers[id]&&state.answers[id].k;
+    if(qid==="q4"){
+      if(a("q2")==="A") return "Quem toca o negócio sozinho vira o gargalo de tudo: atende, vende, cobra. Vamos ver onde isso pesa mais no seu caso.";
+      if(a("q3")==="A") return "Negócio que vende pelo WhatsApp vive da velocidade da resposta. Vamos ver onde o seu está travando.";
+      return "Agora a parte que importa: onde o seu negócio está perdendo tempo e cliente.";
+    }
+    if(qid==="q7") return "Quase todo dono acha que o problema é falta de cliente. Muitas vezes é o que acontece depois que o cliente chega. Agora, a sua relação com a IA.";
+    if(qid==="q11") return "Falta pouco. Não existe resposta certa aqui — só a que combina com a sua rotina.";
+    return "";
+  }
+  function keysOf(ans){ if(!ans) return []; if(Array.isArray(ans.ks)) return ans.ks; return ans.k?[ans.k]:[]; }
+
+  const PRIORITY_COPY = {
+    atendimento:{t:"Parar de perder cliente na espera",c:"Cliente que pergunta e não recebe resposta procura o concorrente — e você nem fica sabendo.",d:"A primeira resposta sai na hora, qualifica o pedido e passa para você só quem está pronto para comprar."},
+    crm:{t:"Nenhum contato sem próximo passo",c:"Orçamento enviado sem retorno vira venda esquecida. A memória do dono não dá conta.",d:"Cada contato com etapa e lembrete de retorno — você sabe quem chamar hoje."},
+    posts:{t:"Presença sem improviso",c:"Post feito na correria às 23h, ou semana sem aparecer.",d:"Calendário e rascunhos prontos para você só aprovar."},
+    criativos:{t:"Peças que param o dedo",c:"Anúncio que ninguém nota é verba que não volta.",d:"Variações com a sua marca a partir de um briefing claro, com revisão humana."},
+    trafego:{t:"Anúncio com rotina, não com sorte",c:"Campanha ligada e esquecida gasta sem você saber se está trazendo cliente.",d:"Leitura e ajuste semanal assistido, na sua conta, com você no controle."},
+    financeiro:{t:"Enxergar o caixa antes de decidir",c:"Decisão tomada no escuro e o buraco descoberto no fim do mês.",d:"Entradas, saídas e contas a pagar numa tela só."},
+    agenda:{t:"Agenda que se confirma sozinha",c:"Cada falta é um horário que não volta — e o tempo de remarcar sai do seu dia.",d:"Confirmação e lembrete automáticos, sem você pegar o telefone."},
+    erp:{t:"Operação que não depende de você",c:"Se você para, o negócio para: estoque, pedido e equipe esperam a sua decisão.",d:"Estoque, pedidos e equipe no mesmo mapa, para o negócio andar sem você em cima."},
+    implantacao:{t:"Alguém monta com você",c:"Sem tempo para implantar, a melhoria fica para “depois” — e o depois não chega.",d:"A equipe Volt IA implanta com checklist; você só aprova."},
+    comunidade:{t:"Aprender com quem está no mesmo barco",c:"Aprender sozinho, por tentativa e erro, custa caro em tempo.",d:"Curso + comunidade para tirar dúvida rápido e usar templates prontos."}
+  };
+  const LEVELS = [
+    {max:3,name:"Iniciante",course:"Para você: módulo base — o que a IA faz (e não faz) no negócio, comandos seguros e os primeiros usos no WhatsApp e na planilha.",blurb:"Você ainda não colocou a IA para trabalhar — o que significa que cada tarefa repetitiva ainda passa pelas suas mãos. A boa notícia: quem começa do zero e com método evita os erros mais caros de quem sai testando ferramenta solta."},
+    {max:7,name:"Intermediário",course:"Para você: módulo prático — transformar uso avulso em fluxos, montar agentes simples e semi-automatizar atendimento e conteúdo.",blurb:"Você já sabe que a IA funciona, mas ela ainda depende de você abrir e pedir. O salto agora é sair do uso avulso para rotinas que rodam sozinhas — é aí que as horas começam a voltar."},
+    {max:12,name:"Avançado",course:"Para você: módulo de implantação — orquestrar agentes, medir o que está dando resultado e decidir o que escalar.",blurb:"Você já tem fluência. O risco agora é outro: ferramenta demais, resultado de menos. O próximo passo é estruturar, medir e manter só o que paga a conta."}
+  ];
+  /* Espelho: devolve ao dono a dor que ele mesmo marcou (personalização + compromisso). Sem estatística. */
+  const MIRROR = {
+    q4:{A:"o atendimento come o seu dia",B:"criar conteúdo toma horas que deviam ir para vender",C:"você corre atrás de quem não fechou",D:"conta e planilha disputam o seu tempo",E:"marcar e remarcar horário toma a sua semana",F:"a equipe depende de você para tudo"},
+    q5:{A:"cliente que pergunta e não recebe resposta rápida vai embora",B:"chega pouca gente nova",C:"os seus anúncios e posts não estão chamando atenção",D:"você não enxerga com clareza o que entra e o que sai",E:"falta e horário vago corroem a agenda",F:"você ainda não sabe onde perde — e o que não se mede não se corrige"}
+  };
+  const VALID_DDD = new Set([11,12,13,14,15,16,17,18,19,21,22,24,27,28,31,32,33,34,35,37,38,41,42,43,44,45,46,47,48,49,51,53,54,55,61,62,63,64,65,66,67,68,69,71,73,74,75,77,79,81,82,83,84,85,86,87,88,89,91,92,93,94,95,96,97,98,99]);
+
+  const state = { i:0, answers:{}, started:false, lead:null, mode:"idle", litRooms:[] };
+  const $ = (id)=>document.getElementById(id);
+  const SYS_RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function readPref(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function writePref(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  let RM = SYS_RM || readPref("volt_reduce_motion")==="1";
+  const MOBILE = matchMedia("(max-width:860px)").matches;
+
+  /* ========== CONFIG DE ENVIO (preencher após deploy do Worker — ver leads-worker/README.md) ========== */
+  const CFG = Object.assign({
+    LEADS_ENDPOINT: "",          // ex.: "https://volt-ia-leads.<conta>.workers.dev/leads"
+    TURNSTILE_SITEKEY: "",       // sitekey pública do widget Turnstile
+    CONSENT_TEXT_VERSION: "2026-11-09-v1"
+  }, window.VOLT_CONFIG||{});
+  const QUEUE_KEY = "volt_lead_pending";
+
+  function applyMotionPref(){
+    document.documentElement.classList.toggle("reduce-motion", RM);
+    const b=$("btn-motion");
+    if(b){ b.setAttribute("aria-pressed", RM?"true":"false"); b.textContent = RM ? "Movimento reduzido ✓" : "Reduzir movimento"; }
+  }
+
+  /* ========== CENA 3D (projeção perspectiva própria) ========== */
+  const canvas = $("fx");
+  const ctx = canvas.getContext("2d",{alpha:false});
+  let W=0,H=0,dpr=1,raf=0,paused=false;
+  let camZ=2.5, camZFrom=2.5, camZTo=2.5, travelT0=0, travelDur=1200, traveling=false;
+  let wake=0, hue=0.32, dens=0.55, speed=0.7;
+  let particles=[], orbs=[], glitchUntil=0, glitchBox=null;
+  let frameTimes=[], lastFrame=performance.now();
+  let shake=0;
+  const DOOR_STEP = 9; // distância Z entre portas
+  const CORE_Z = 62;   // núcleo no fim
+  const FOV = 380;
+
+  function project(x,y,z){
+    const dz = z - camZ;
+    if(dz < 0.35) return null;
+    const s = FOV / dz;
+    return { x: W/2 + x*s, y: H*0.46 + y*s, s, dz };
+  }
+
+  function easeOutCubic(t){ return 1 - Math.pow(1-t,3); }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = Math.floor(W*dpr); canvas.height = Math.floor(H*dpr);
+    canvas.style.width = W+"px"; canvas.style.height = H+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n = RM ? 0 : (MOBILE ? 45 : 140);
+    if(particles.length!==n){
+      particles = Array.from({length:n},()=>({
+        x:(Math.random()-0.5)*40, y:(Math.random()-0.5)*24, z: camZ+2+Math.random()*70,
+        vx:(Math.random()-0.5)*.02, vy:(Math.random()-0.5)*.015, s:.5+Math.random()*1.4
+      }));
+    }
+    const no = RM ? 0 : (MOBILE ? 8 : 18);
+    if(orbs.length!==no){
+      orbs = Array.from({length:no},(_,i)=>({
+        a: (i/no)*Math.PI*2, r: 3+Math.random()*5, sp: 0.0006+Math.random()*0.0012, phase:Math.random()*Math.PI*2
+      }));
+    }
+  }
+
+  function setWake(p){
+    wake = Math.max(0, Math.min(1, p));
+    const lab = $("core-progress");
+    if(lab) lab.textContent = wake<0.04 ? "sistema em espera" : wake<1 ? ("acordando · "+Math.round(wake*100)+"%") : "núcleo online · 100%";
+  }
+
+  function setMoodFromTags(scores){
+    const entries = Object.entries(scores||{}).sort((a,b)=>b[1]-a[1]);
+    const top = entries[0] && entries[0][0];
+    const total = entries.reduce((s,[,v])=>s+v,0);
+    dens = Math.min(1, 0.4 + total*0.045);
+    speed = Math.min(1.5, 0.55 + total*0.05);
+    const map = {atendimento:0.34,crm:0.38,posts:0.28,criativos:0.2,trafego:0.16,financeiro:0.45,agenda:0.5,erp:0.36,implantacao:0.32,comunidade:0.3};
+    if(top && map[top]!=null) hue = map[top];
+  }
+
+  function triggerTravel(deltaZ){
+    if(RM){ camZ += (deltaZ||DOOR_STEP*0.85); camZTo=camZ; return; }
+    camZFrom = camZ;
+    camZTo = camZ + (deltaZ==null ? DOOR_STEP*0.92 : deltaZ);
+    travelT0 = performance.now();
+    travelDur = 1400;
+    traveling = true;
+    shake = 1;
+    $("travel-veil").classList.add("on");
+    document.querySelectorAll('.card:not(.hidden)').forEach(c=>c.classList.add('traveling'));
+    setTimeout(()=>{
+      $("travel-veil").classList.remove("on");
+      document.querySelectorAll('.card').forEach(c=>c.classList.remove('traveling'));
+    }, travelDur+50);
+    if(!MOBILE){
+      glitchUntil = performance.now()+110;
+      glitchBox = {x:W*0.15+Math.random()*W*0.5, y:H*0.2+Math.random()*H*0.25, w:50+Math.random()*90, h:4+Math.random()*8};
+    }
+  }
+
+  function updateCam(now){
+    if(!traveling) return;
+    const t = Math.min(1, (now-travelT0)/travelDur);
+    const e = easeOutCubic(t);
+    camZ = camZFrom + (camZTo-camZFrom)*e;
+    shake = (1-e)*0.35;
+    if(t>=1){ traveling=false; camZ=camZTo; shake=0; }
+  }
+
+  function doorLabelForZ(z){
+    const idx = Math.floor(z / DOOR_STEP) % ROOM_ORDER.length;
+    return ROOM_ORDER[(idx+ROOM_ORDER.length)%ROOM_ORDER.length];
+  }
+
+  function drawScene(now){
+    updateCam(now);
+    const ox = (Math.random()-0.5)*shake*2.2;
+    const oy = (Math.random()-0.5)*shake*1.4;
+    ctx.save();
+    ctx.translate(ox,oy);
+
+    // fundo
+    ctx.fillStyle = "#050608";
+    ctx.fillRect(-10,-10,W+20,H+20);
+    // névoa radial
+    const fog = ctx.createRadialGradient(W/2,H*0.46,20,W/2,H*0.46,Math.max(W,H)*0.7);
+    fog.addColorStop(0, `hsla(${hue*360},80%,18%,${0.25+wake*0.25})`);
+    fog.addColorStop(1, "rgba(5,6,8,0)");
+    ctx.fillStyle = fog; ctx.fillRect(0,0,W,H);
+
+    // anéis de corredor (perspectiva) — de longe para perto
+    const zStart = camZ + 1.2;
+    const zEnd = camZ + 55;
+    const rings = [];
+    for(let z=Math.ceil(zStart*10)/10; z<zEnd; z+=0.85) rings.push(z);
+    // portas a cada DOOR_STEP
+    const doors = [];
+    const firstDoor = Math.ceil(camZ/DOOR_STEP)*DOOR_STEP;
+    for(let z=firstDoor; z<camZ+60; z+=DOOR_STEP) if(z>camZ+1.5) doors.push(z);
+
+    // desenhar rings do fundo (maior z) para frente
+    rings.sort((a,b)=>b-a);
+    for(const z of rings){
+      const hw=8.5, hh=5.2;
+      const tl=project(-hw,-hh,z), tr=project(hw,-hh,z), br=project(hw,hh,z), bl=project(-hw,hh,z);
+      if(!tl||!tr||!br||!bl) continue;
+      const a = Math.max(0.04, Math.min(0.55, 1.8/tl.dz));
+      ctx.strokeStyle = `rgba(200,255,46,${a*0.75})`;
+      ctx.lineWidth = Math.max(0.6, 2.2*(FOV/(tl.dz*40)));
+      ctx.beginPath();
+      ctx.moveTo(tl.x,tl.y); ctx.lineTo(tr.x,tr.y); ctx.lineTo(br.x,br.y); ctx.lineTo(bl.x,bl.y); ctx.closePath();
+      ctx.stroke();
+      // piso
+      ctx.strokeStyle = `rgba(200,255,46,${a*0.35})`;
+      ctx.beginPath(); ctx.moveTo(bl.x,bl.y); ctx.lineTo(br.x,br.y); ctx.stroke();
+      // floor centerline + ceiling
+      const fc=project(0,hh,z), tc=project(0,-hh,z);
+      if(fc&&tc){ ctx.strokeStyle=`rgba(200,255,46,${a*0.2})`; ctx.beginPath(); ctx.moveTo(W/2, H); ctx.lineTo(fc.x,fc.y); ctx.stroke(); }
+
+      // linhas laterais contínuas
+      if(z%2.4<0.2){
+        ctx.strokeStyle = `rgba(139,146,156,${a*0.4})`;
+        ctx.beginPath(); ctx.moveTo(tl.x,tl.y); ctx.lineTo(bl.x,bl.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(tr.x,tr.y); ctx.lineTo(br.x,br.y); ctx.stroke();
+      }
+    }
+
+    // portas / salas
+    for(const z of doors){
+      const label = doorLabelForZ(z);
+      const litBoost = (state.litRooms||[]).includes(label) ? 0.5 : 0;
+      const left = true;
+      for(const side of [-1,1]){
+        const x0 = side*8.5, x1 = side*5.4;
+        const y0=-2.0, y1=4.4;
+        const p1=project(x0,y0,z), p2=project(x1,y0,z), p3=project(x1,y1,z), p4=project(x0,y1,z);
+        if(!p1||!p2||!p3||!p4) continue;
+        const a = Math.max(0.05, Math.min(0.7, 2.2/p1.dz)) + litBoost;
+        ctx.fillStyle = `rgba(18,28,16,${0.4+a*0.35})`;
+        ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.lineTo(p3.x,p3.y); ctx.lineTo(p4.x,p4.y); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = `rgba(200,255,46,${0.25+a*0.5+litBoost})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        // glow interno se próximo / lit
+        if(p1.dz < 18 || litBoost){
+          ctx.fillStyle = `rgba(200,255,46,${0.08+wake*0.1+litBoost*0.25+(p1.dz<10?0.2:0)})`;
+          ctx.fill();
+        }
+        // label
+        if(side===-1 && p1.dz < 28 && p1.dz > 3){
+          const mid = project(x0*0.85, -0.2, z);
+          if(mid){
+            ctx.save();
+            ctx.font = `${Math.max(9, Math.min(14, 220/p1.dz))}px "JetBrains Mono",monospace`;
+            ctx.fillStyle = `rgba(200,255,46,${Math.min(0.9, 0.25+1.5/p1.dz+litBoost)})`;
+            ctx.textAlign = "center";
+            ctx.fillText(label.toUpperCase(), mid.x, mid.y);
+            ctx.restore();
+          }
+        }
+      }
+    }
+
+    // núcleo no CORE_Z
+    const coreP = project(0,0,CORE_Z);
+    if(coreP){
+      const near = Math.max(0, 1 - (CORE_Z-camZ)/75);
+      const R = Math.min(Math.min(W,H)*0.16, (28 + wake*55 + near*110) * (FOV/((CORE_Z-camZ)||1)) / (FOV/40));
+      const g = ctx.createRadialGradient(coreP.x,coreP.y,2,coreP.x,coreP.y,R*2.8);
+      g.addColorStop(0, `hsla(${hue*360},95%,70%,${0.85+wake*0.15})`);
+      g.addColorStop(0.35, `hsla(${hue*360},90%,45%,${0.35+wake*0.3})`);
+      g.addColorStop(1, "rgba(200,255,46,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(coreP.x,coreP.y,R*2.8,0,Math.PI*2); ctx.fill();
+      // núcleo sólido
+      ctx.beginPath(); ctx.arc(coreP.x,coreP.y, Math.max(6,R*0.35),0,Math.PI*2);
+      ctx.fillStyle = `hsla(${hue*360},100%,70%,${0.85+wake*0.15})`;
+      ctx.fill();
+      // anéis girando (≤1 Hz visual)
+      const spin = now*0.001*(0.35+wake*0.4); // ~0.35-0.75 Hz
+      for(let i=0;i<3;i++){
+        const rr = R*(0.55+i*0.28);
+        ctx.save();
+        ctx.translate(coreP.x,coreP.y);
+        ctx.rotate(spin*(i%2?1:-1)+i);
+        ctx.strokeStyle = `rgba(200,255,46,${0.2+wake*0.35-i*0.04})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.ellipse(0,0,rr,rr*0.42,0,0,Math.PI*2); ctx.stroke();
+        ctx.restore();
+      }
+      // pulso lento ≤1 Hz
+      const pulse = 0.5+0.5*Math.sin(now*0.004); // ~0.64 Hz
+      ctx.beginPath(); ctx.arc(coreP.x,coreP.y, R*(0.7+pulse*0.15+wake*0.1),0,Math.PI*2);
+      ctx.strokeStyle = `rgba(200,255,46,${0.15+wake*0.25})`;
+      ctx.lineWidth = 2; ctx.stroke();
+
+      // órbitas
+      for(const o of orbs){
+        o.a += o.sp * (0.8+speed);
+        const ox3 = Math.cos(o.a+o.phase)*o.r;
+        const oy3 = Math.sin(o.a+o.phase)*o.r*0.45;
+        const oz3 = CORE_Z + Math.sin(o.a*1.3)*2;
+        const pp = project(ox3,oy3,oz3);
+        if(!pp) continue;
+        ctx.fillStyle = `hsla(${hue*360},90%,60%,${0.35+wake*0.4})`;
+        ctx.fillRect(pp.x, pp.y, 2.2, 2.2);
+      }
+
+      // feixes do núcleo para portas próximas (mood)
+      if(wake>0.15){
+        for(let i=0;i<6;i++){
+          const a = (i/6)*Math.PI*2 + now*0.0004*speed;
+          const len = 8+dens*10;
+          const tip = project(Math.cos(a)*len, Math.sin(a)*len*0.4, CORE_Z-6);
+          if(!tip) continue;
+          const grd = ctx.createLinearGradient(coreP.x,coreP.y,tip.x,tip.y);
+          grd.addColorStop(0, `hsla(${hue*360},90%,60%,${0.45+wake*0.3})`);
+          grd.addColorStop(1, "rgba(200,255,46,0)");
+          ctx.strokeStyle = grd; ctx.lineWidth = 1.4+dens;
+          ctx.beginPath(); ctx.moveTo(coreP.x,coreP.y); ctx.lineTo(tip.x,tip.y); ctx.stroke();
+        }
+      }
+    }
+
+    // partículas no espaço do corredor
+    for(const p of particles){
+      p.z -= (traveling?0.42:0.04)*speed*(0.7+dens);
+      p.x += p.vx; p.y += p.vy;
+      if(p.z < camZ+0.8){ p.z = camZ+50+Math.random()*20; p.x=(Math.random()-0.5)*36; p.y=(Math.random()-0.5)*20; }
+      const pp = project(p.x,p.y,p.z);
+      if(!pp) continue;
+      const a = Math.min(0.9, (0.3+dens*0.5)*(8/pp.dz));
+      ctx.fillStyle = `hsla(${hue*360},90%,60%,${a})`;
+      const sz = p.s * Math.max(0.6, 18/pp.dz);
+      ctx.fillRect(pp.x, pp.y, sz, sz*1.6);
+    }
+
+    // speed lines durante travel
+    if(traveling){
+      const cx=W/2, cy=H*0.46;
+      for(let i=0;i<28;i++){
+        const a=(i/18)*Math.PI*2 + Math.random()*0.05;
+        const r1=20+Math.random()*30, r2=90+Math.random()*160;
+        ctx.strokeStyle=`rgba(200,255,46,${0.12+Math.random()*0.22})`;
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(cx+Math.cos(a)*r1, cy+Math.sin(a)*r1*0.55);
+        ctx.lineTo(cx+Math.cos(a)*r2, cy+Math.sin(a)*r2*0.55);
+        ctx.stroke();
+      }
+      // aberração cromática leve local (não full screen)
+      if(glitchBox && performance.now()<glitchUntil){
+        const g=glitchBox;
+        ctx.globalCompositeOperation="lighter";
+        ctx.fillStyle="rgba(200,255,46,0.35)"; ctx.fillRect(g.x,g.y,g.w,g.h);
+        ctx.fillStyle="rgba(255,90,31,0.2)"; ctx.fillRect(g.x+3,g.y+2,g.w*0.5,2);
+        ctx.globalCompositeOperation="source-over";
+      }
+    }
+
+    ctx.restore();
+  }
+
+  function frame(now){
+    if(paused||document.hidden){ raf=requestAnimationFrame(frame); return; }
+    const dt=Math.min(40, now-lastFrame); lastFrame=now;
+    frameTimes.push(dt); if(frameTimes.length>90) frameTimes.shift();
+    if(RM){
+      // versão calma: núcleo estático suave
+      ctx.fillStyle="#07080A"; ctx.fillRect(0,0,W,H);
+      const cx=W/2,cy=H*0.42,r=40+wake*50;
+      const g=ctx.createRadialGradient(cx,cy,2,cx,cy,r*2);
+      g.addColorStop(0,`rgba(200,255,46,${0.3+wake*0.35})`);
+      g.addColorStop(1,"rgba(200,255,46,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r*2,0,Math.PI*2); ctx.fill();
+    } else {
+      drawScene(now);
+    }
+    // vignette
+    const vg=ctx.createRadialGradient(W/2,H*0.46,Math.min(W,H)*0.2,W/2,H*0.46,Math.max(W,H)*0.8);
+    vg.addColorStop(0,"rgba(0,0,0,0)"); vg.addColorStop(1,"rgba(0,0,0,0.55)");
+    ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+    raf=requestAnimationFrame(frame);
+  }
+
+  function startFX(){
+    resize();
+    window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange",()=>{paused=document.hidden});
+    lastFrame=performance.now();
+    raf=requestAnimationFrame(frame);
+  }
+
+  window.__QUIZ_PERF__ = {
+    avgFrameMs(){return frameTimes.length?frameTimes.reduce((a,b)=>a+b,0)/frameTimes.length:null},
+    approxFps(){const a=this.avgFrameMs();return a?1000/a:null}
+  };
+
+  /* ========== Prédio cutaway no resultado ========== */
+  let bAnim=null;
+  function drawBuilding(litList, progressByRoom){
+    const c=$("building-stage"); if(!c) return;
+    const bctx=c.getContext("2d");
+    const dprB=Math.min(window.devicePixelRatio||1,2);
+    const cssW=c.clientWidth||560, cssH=c.clientHeight||220;
+    c.width=Math.floor(cssW*dprB); c.height=Math.floor(cssH*dprB);
+    bctx.setTransform(dprB,0,0,dprB,0,0);
+    const w=cssW,h=cssH;
+    bctx.fillStyle="#040506"; bctx.fillRect(0,0,w,h);
+    // building shell perspective
+    const cx=w*0.5, cy=h*0.52;
+    bctx.strokeStyle="rgba(200,255,46,0.25)"; bctx.lineWidth=1.2;
+    bctx.strokeRect(18,12,w-36,h-28);
+    // floors
+    const floors=5;
+    for(let f=0;f<=floors;f++){
+      const y=12+(h-28)*(f/floors);
+      bctx.strokeStyle="rgba(38,42,49,0.95)";
+      bctx.beginPath(); bctx.moveTo(18,y); bctx.lineTo(w-18,y); bctx.stroke();
+    }
+    // central shaft / core
+    const shaftW=Math.max(48,w*0.14);
+    const ng=bctx.createRadialGradient(cx,cy,2,cx,cy,shaftW*1.6);
+    ng.addColorStop(0,"rgba(200,255,46,0.75)");
+    ng.addColorStop(0.45,"rgba(200,255,46,0.2)");
+    ng.addColorStop(1,"rgba(200,255,46,0)");
+    bctx.fillStyle=ng; bctx.beginPath(); bctx.arc(cx,cy,shaftW*1.5,0,Math.PI*2); bctx.fill();
+    bctx.fillStyle="rgba(200,255,46,0.85)"; bctx.beginPath(); bctx.arc(cx,cy,8,0,Math.PI*2); bctx.fill();
+    bctx.strokeStyle="rgba(200,255,46,0.45)";
+    bctx.strokeRect(cx-shaftW/2,16,shaftW,h-40);
+
+    const rooms=ROOM_ORDER.slice();
+    rooms.forEach((name,i)=>{
+      const floor=Math.floor(i/2), side=i%2;
+      const floorH=(h-40)/floors;
+      const y=16+floor*floorH+4;
+      const rw=(w-36-shaftW)/2 - 10;
+      const x = side===0 ? 22 : (cx+shaftW/2+6);
+      const rh=floorH-10;
+      const lit=litList.includes(name);
+      const prog=progressByRoom[name]||0;
+      // room volume (3D-ish parallelogram)
+      bctx.beginPath();
+      if(side===0){
+        bctx.moveTo(x,y+3); bctx.lineTo(x+rw*0.92,y); bctx.lineTo(x+rw,y+rh); bctx.lineTo(x+6,y+rh+3);
+      } else {
+        bctx.moveTo(x+rw*0.08,y); bctx.lineTo(x+rw,y+3); bctx.lineTo(x+rw-6,y+rh+3); bctx.lineTo(x,y+rh);
+      }
+      bctx.closePath();
+      bctx.fillStyle = lit ? `rgba(200,255,46,${0.12+prog*0.45})` : "rgba(12,14,16,0.85)";
+      bctx.fill();
+      bctx.strokeStyle = lit ? `rgba(200,255,46,${0.4+prog*0.5})` : "rgba(38,42,49,0.95)";
+      bctx.lineWidth = lit?1.8:1; bctx.stroke();
+      // window dots
+      for(let wy=0; wy<3; wy++){
+        for(let wx=0; wx<4; wx++){
+          const px=x+10+wx*(rw/5), py=y+8+wy*(rh/4);
+          bctx.fillStyle = lit && prog>0.2 ? `rgba(232,255,154,${0.35+prog*0.5})` : "rgba(38,42,49,0.8)";
+          bctx.fillRect(px,py,3,3);
+        }
+      }
+      if(lit && prog>0){
+        const wave=bctx.createRadialGradient(x+rw/2,y+rh/2,2,x+rw/2,y+rh/2,rw*0.75*Math.max(0.2,prog));
+        wave.addColorStop(0,`rgba(200,255,46,${0.28*(1-prog*0.25)})`);
+        wave.addColorStop(1,"rgba(200,255,46,0)");
+        bctx.fillStyle=wave; bctx.fill();
+        // beam to core
+        bctx.strokeStyle=`rgba(200,255,46,${0.2+prog*0.55})`; bctx.lineWidth=1.4;
+        bctx.beginPath(); bctx.moveTo(side===0?x+rw:x, y+rh/2); bctx.lineTo(cx,cy); bctx.stroke();
+        for(let k=0;k<5;k++){
+          const t=(prog*0.65+k*0.12)%1;
+          const x0=side===0?x+rw:x;
+          const px=x0+(cx-x0)*t, py=(y+rh/2)+(cy-(y+rh/2))*t;
+          bctx.fillStyle="rgba(200,255,46,0.7)"; bctx.fillRect(px,py,2.2,2.2);
+        }
+      }
+      bctx.font='500 9px "JetBrains Mono",monospace';
+      bctx.textAlign="center";
+      bctx.fillStyle = lit ? (prog>0.35?"#07080A":"#C8FF2E") : "#6B7280";
+      bctx.fillText(name, x+rw/2, y+rh/2+3);
+    });
+  }
+
+  function animateBuilding(litList){
+    const progressByRoom={};
+    litList.forEach(n=>progressByRoom[n]=0);
+    if(bAnim) cancelAnimationFrame(bAnim);
+    if(RM){
+      litList.forEach(n=>progressByRoom[n]=1);
+      drawBuilding(litList, progressByRoom);
+      return;
+    }
+    const start=performance.now();
+    const stagger=520;
+    function tick(now){
+      litList.forEach((n,i)=>{
+        const local = Math.min(1, Math.max(0, (now-start - i*stagger)/900));
+        progressByRoom[n] = local*local*(3-2*local);
+      });
+      drawBuilding(litList, progressByRoom);
+      const done = litList.every((n,i)=> now-start > i*stagger+900);
+      if(!done) bAnim=requestAnimationFrame(tick);
+    }
+    bAnim=requestAnimationFrame(tick);
+  }
+
+  /* ========== Lógica v1.1 ========== */
+  function show(id){
+    ["screen-start","screen-quiz","screen-lead","screen-result"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
+    $("core-hud").classList.toggle("visible", id!=="screen-start");
+    state.mode = id;
+  }
+  function selectedOption(q){ const a=state.answers[q.id]; if(!a||a.k==null) return null; return q.options.find(o=>o.k===a.k)||null; }
+  function selectedOptions(q){ const ks=keysOf(state.answers[q.id]); return q.options.filter(o=>ks.includes(o.k)); }
+  function canAdvance(){ const q=QUESTIONS[state.i]; const a=state.answers[q.id]; if(q.type==="text") return true; return keysOf(a).length>0; }
+
+  function renderQuestion(){
+    const q=QUESTIONS[state.i], n=state.i+1;
+    $("q-num").textContent=String(n); $("q-block").textContent=q.blockShort;
+    $("q-label").textContent="Bloco "+q.block; $("q-text").textContent=q.text;
+    $("progress-fill").style.width=((n/QUESTIONS.length)*100).toFixed(1)+"%";
+    $("btn-back").style.visibility=state.i===0?"hidden":"visible";
+    $("btn-next").textContent=n===QUESTIONS.length?"Ver meu diagnóstico":"Próxima";
+    const fb=blockFeedback(q.id); const fbEl=$("q-feedback"); fbEl.textContent=fb; fbEl.classList.toggle("hidden",!fb);
+    setWake(n/QUESTIONS.length);
+    // alvo de câmera por pergunta (posição ao longo do prédio)
+    const targetPos = 2.5 + (n-1)*DOOR_STEP*0.92;
+    if(!traveling && Math.abs(camZ-targetPos)>0.5 && !RM){ /* sync soft se necessário */ }
+
+    const body=$("q-body"); body.innerHTML="";
+    if(q.type==="text"){
+      const ta=document.createElement("textarea"); ta.id="q-text-input"; ta.placeholder=q.placeholder||""; ta.maxLength=280;
+      ta.value=(state.answers[q.id]&&state.answers[q.id].text)||"";
+      ta.addEventListener("input",()=>{ state.answers[q.id]={text:ta.value.slice(0,280)}; $("btn-next").disabled=!canAdvance(); });
+      body.appendChild(ta); $("btn-next").disabled=!canAdvance(); return;
+    }
+    const box=document.createElement("div"); box.className="options";
+    if(q.type==="multi"){ box.setAttribute("role","group"); box.setAttribute("aria-label","Escolha até "+q.max); }
+    const cur=keysOf(state.answers[q.id]);
+    q.options.forEach(opt=>{
+      const b=document.createElement("button"); b.type="button";
+      const sel=cur.includes(opt.k);
+      b.className="opt"+(sel?" selected":"");
+      b.setAttribute("aria-pressed", sel?"true":"false");
+      b.innerHTML='<span class="opt-k">'+opt.k+'</span>'+opt.label;
+      b.addEventListener("click",()=>{
+        if(q.type==="multi"){
+          let ks=keysOf(state.answers[q.id]).slice();
+          if(ks.includes(opt.k)) ks=ks.filter(k=>k!==opt.k);
+          else { ks.push(opt.k); if(ks.length>q.max) ks.shift(); }
+          state.answers[q.id]={ks};
+        } else state.answers[q.id]={k:opt.k};
+        setMoodFromTags(tagScores()); renderQuestion();
+        const again=$("q-body").querySelectorAll(".opt")[q.options.indexOf(opt)]; if(again) again.focus();
+      });
+      box.appendChild(b);
+    });
+    body.appendChild(box); $("btn-next").disabled=!canAdvance();
+  }
+
+  function knowledgeScore(){ let s=0; QUESTIONS.forEach(q=>{ if(q.scoreKey!=="knowledge") return; const opt=selectedOption(q); if(opt&&typeof opt.score==="number") s+=opt.score; }); return s; }
+  function levelFor(score){ for(const L of LEVELS){ if(score<=L.max) return L; } return LEVELS[LEVELS.length-1]; }
+  function tagScores(){ const scores={}; QUESTIONS.forEach(q=>{ if(q.type!=="single"&&q.type!=="multi") return; selectedOptions(q).forEach(opt=>{ if(!opt.tags) return; Object.keys(opt.tags).forEach(t=>{ scores[t]=(scores[t]||0)+opt.tags[t]; }); }); }); return scores; }
+  function topTags(scores,n){ return Object.keys(scores).map(k=>({k,v:scores[k]})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v||a.k.localeCompare(b.k)).slice(0,n).map(x=>x.k); }
+  function recommendSolutions(tags,intent){
+    const TAG_TO_SOLS={atendimento:["atendimento","crm"],posts:["posts","criativos"],criativos:["criativos","posts"],trafego:["trafego","criativos"],financeiro:["financeiro"],agenda:["agenda"],crm:["crm"],erp:["erp","crm"]};
+    const out=[]; const add=(key)=>{ if(!CATALOG[key]) return; if(out.find(s=>s.key===key)) return; out.push({key,...CATALOG[key]}); };
+    const intentKey=(intent==="done"||intent==="both")?"implantacao":(intent==="solo"?"comunidade":null);
+    const maxPain=intentKey?2:3; const painTags=tags.filter(t=>TAG_TO_SOLS[t]);
+    for(let i=0;i<painTags.length;i++){ if(out.length>=maxPain) break; const sols=TAG_TO_SOLS[painTags[i]]; const take=i===0?sols:sols.slice(0,1); for(const s of take){ if(out.length>=maxPain) break; add(s);} }
+    if(intentKey) add(intentKey);
+    if(out.length===0){ add("atendimento"); if(intentKey) add(intentKey); else add("comunidade"); }
+    return out.slice(0,3);
+  }
+  function prioritiesFrom(tags,intent){
+    const keys=tags.slice(0,3);
+    if(intent==="done"&&!keys.includes("implantacao")) keys.push("implantacao");
+    if(intent==="solo"&&!keys.includes("comunidade")) keys.push("comunidade");
+    while(keys.length<3){ const fill=["atendimento","posts","financeiro","agenda","crm"].find(k=>!keys.includes(k)); if(!fill) break; keys.push(fill); }
+    return keys.slice(0,3).map(k=>PRIORITY_COPY[k]||{t:k,d:""});
+  }
+  function intentOf(){ const q=QUESTIONS.find(x=>x.intent); const opt=selectedOption(q); return (opt&&opt.intent)||"both"; }
+
+  function onlyDigits(s){ return String(s||"").replace(/\D+/g,""); }
+  function normalizeWhatsApp(raw){ let d=onlyDigits(raw); if(d.startsWith("55")&&d.length>=12) d=d.slice(2); return d; }
+  function validateWhatsApp(raw){
+    const d=normalizeWhatsApp(raw);
+    if(!d) return {ok:false,msg:"Informe o WhatsApp com DDD."};
+    if(!(d.length===10||d.length===11)) return {ok:false,msg:"Use DDD + número com 10 ou 11 dígitos."};
+    const ddd=parseInt(d.slice(0,2),10); if(!VALID_DDD.has(ddd)) return {ok:false,msg:"DDD inválido no Brasil."};
+    if(d.length===11&&d[2]!=="9") return {ok:false,msg:"Celular com 11 dígitos deve começar com 9 após o DDD."};
+    return {ok:true,e164:"+55"+d,national:d};
+  }
+  function validateEmail(raw){ const e=String(raw||"").trim(); if(!e) return {ok:false,msg:"Informe o e-mail."}; if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)||e.length>160) return {ok:false,msg:"E-mail inválido."}; return {ok:true,email:e}; }
+  function validateNome(raw){ const n=String(raw||"").trim().replace(/\s+/g," "); if(n.length<2) return {ok:false,msg:"Informe seu nome."}; if(n.length>120) return {ok:false,msg:"Nome muito longo."}; return {ok:true,nome:n}; }
+  function maskWhatsApp(el){ let d=onlyDigits(el.value); if(d.startsWith("55")&&d.length>11) d=d.slice(2); d=d.slice(0,11); let out=d; if(d.length>0) out="("+d.slice(0,2); if(d.length>=2) out+=") "; if(d.length>2){ if(d.length<=10){ out+=d.slice(2,6); if(d.length>6) out+="-"+d.slice(6);} else { out+=d.slice(2,7); if(d.length>7) out+="-"+d.slice(7);} } el.value=out; }
+  function setFieldError(fieldId,errId,msg){ const f=$(fieldId),e=$(errId); if(msg){ f.classList.add("error"); e.hidden=false; e.textContent=msg; return false;} f.classList.remove("error"); e.hidden=true; e.textContent=""; return true; }
+  function validateLeadForm(){
+    const n=validateNome($("lead-nome").value), w=validateWhatsApp($("lead-whatsapp").value), em=validateEmail($("lead-email").value), cons=$("lead-consent").checked;
+    let ok=true;
+    ok=setFieldError("field-nome","err-nome",n.ok?null:n.msg)&&ok;
+    ok=setFieldError("field-whatsapp","err-whatsapp",w.ok?null:w.msg)&&ok;
+    ok=setFieldError("field-email","err-email",em.ok?null:em.msg)&&ok;
+    if(!cons){ $("err-consent").hidden=false; $("err-consent").textContent="Marque o consentimento para continuar."; $("field-consent").style.borderColor="var(--brasa)"; ok=false; }
+    else { $("err-consent").hidden=true; $("err-consent").textContent=""; $("field-consent").style.borderColor=""; }
+    if(!ok){ const first=document.querySelector(".field.error input, #lead-consent:not(:checked)"); if(first) first.focus(); return null; }
+    return {nome:n.nome,whatsapp:w.e164,email:em.email,consent:true,consentAt:new Date().toISOString()};
+  }
+  /* ========== Envio do lead (Worker) + fallback localStorage ========== */
+  function uuid(){ try{ return crypto.randomUUID(); }catch(e){ return "id-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10); } }
+  let turnstileToken="";
+  function initTurnstile(){
+    if(!CFG.TURNSTILE_SITEKEY || !CFG.LEADS_ENDPOINT) return;
+    window.__voltTurnstileCb=(t)=>{ turnstileToken=t; };
+    window.__voltTurnstileLoad=()=>{ try{ window.turnstile.render("#turnstile-box",{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:"__voltTurnstileCb"}); }catch(e){} };
+    const s=document.createElement("script");
+    s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__voltTurnstileLoad&render=explicit"; s.async=true; s.defer=true;
+    document.head.appendChild(s);
+  }
+  function buildPayload(lead){
+    const r=window.__QUIZ_RESULT__||{};
+    const q9=state.answers.q9&&state.answers.q9.text||"";
+    return { nome:lead.nome, whatsapp:lead.whatsapp, email:lead.email, consent:true, consent_at:lead.consentAt,
+      consent_text_version:CFG.CONSENT_TEXT_VERSION, turnstile_token:turnstileToken, source:"quiz-v2",
+      result:{level:r.level,score:r.score,tags:r.tags||[],solutions:r.solutions||[],intent:r.intent,rooms:r.rooms||[]},
+      q9_text:q9.slice(0,280), client_id:lead.clientId };
+  }
+  function queueLocally(payload){ writePref(QUEUE_KEY, JSON.stringify(payload)); }
+  function setSendStatus(kind,html){
+    const el=$("send-status"); el.className="send-status "+kind; el.innerHTML=html;
+    const rb=$("btn-resend"); if(rb) rb.addEventListener("click",()=>{ const p=readPref(QUEUE_KEY); if(p){ try{ sendLead(JSON.parse(p)); }catch(e){} } });
+  }
+  async function sendLead(payload){
+    if(!CFG.LEADS_ENDPOINT){
+      queueLocally(payload);
+      setSendStatus("warn","Seu diagnóstico está aqui na tela. O envio da cópia por e-mail/WhatsApp ainda não está ativo nesta versão — seus dados ficaram guardados só neste navegador.");
+      window.__QUIZ_SEND__={mode:"local-only"}; return;
+    }
+    setSendStatus("","Enviando sua cópia do diagnóstico…");
+    try{
+      const res=await fetch(CFG.LEADS_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      const j=await res.json().catch(()=>({}));
+      if(res.ok && j.ok){ try{ localStorage.removeItem(QUEUE_KEY); }catch(e){} setSendStatus("ok","Pronto. Sua cópia do diagnóstico foi registrada — fique de olho no WhatsApp e no e-mail."); window.__QUIZ_SEND__={mode:"sent",id:j.id}; return; }
+      throw new Error(j.error||("http_"+res.status));
+    }catch(err){
+      queueLocally(payload);
+      setSendStatus("warn",'Não conseguimos registrar sua cópia agora (conexão instável). Seu diagnóstico continua aqui na tela. <br><button class="btn btn-ghost" type="button" id="btn-resend">Tentar enviar de novo</button>');
+      window.__QUIZ_SEND__={mode:"failed",error:String(err&&err.message||err)};
+    }
+  }
+  async function unlockResultLocally(lead){
+    lead.clientId=lead.clientId||uuid();
+    state.lead=lead; renderResult(); show("screen-result"); setWake(1); triggerTravel(CORE_Z-camZ-20);
+    sendLead(buildPayload(lead));
+  }
+  function firstName(n){ return String(n||"").trim().split(/\s+/)[0]||""; }
+  function mirrorText(){
+    const a4=keysOf(state.answers.q4)[0], a5=state.answers.q5&&state.answers.q5.k;
+    const p1=a4&&MIRROR.q4[a4], p2=a5&&MIRROR.q5[a5];
+    const q9=(state.answers.q9&&state.answers.q9.text||"").trim();
+    const nome=state.lead?firstName(state.lead.nome):"";
+    let s=(nome?nome+", v":"V")+"ocê disse que "+(p1||"o dia a dia toma todo o seu tempo")+(p2?" e que "+p2:"")+".";
+    if(q9) s+=" E que, se a IA resolvesse uma coisa amanhã, seria: “"+q9.slice(0,160)+"”.";
+    s+=" Cada semana nesse ritmo é tempo e cliente que não voltam. As salas abaixo foram escolhidas para atacar exatamente isso — começando pelo que pesa mais.";
+    return s;
+  }
+
+  function renderResult(){
+    const score=knowledgeScore(), level=levelFor(score), scores=tagScores(), tags=topTags(scores,4), intent=intentOf();
+    const sols=recommendSolutions(tags,intent), pris=prioritiesFrom(tags,intent);
+    $("res-level").textContent=level.name; $("res-score").textContent=String(score);
+    const nm=state.lead?firstName(state.lead.nome):"";
+    $("res-title").textContent=(nm?nm+", seu nível: ":"Seu nível: ")+level.name; $("res-blurb").textContent=level.blurb;
+    $("res-mirror-text").textContent=mirrorText();
+    $("res-course").textContent=level.course+" Compra única de R$ 97 — a porta de entrada para qualquer solução Volt IA. Sem promessa de faturamento: o curso ensina a usar, o resultado depende da sua rotina.";
+    const lit=sols.map(s=>s.room); state.litRooms=lit;
+    animateBuilding(lit);
+    const pBox=$("res-priorities"); pBox.innerHTML="";
+    pris.forEach((p,i)=>{ const d=document.createElement("div"); d.className="prio"; d.innerHTML="<strong>"+(i+1)+". "+p.t+"</strong>"+(p.c?"<span class='prio-c'><b>O que custa hoje:</b> "+p.c+"</span>":"")+"<span><b>O que a IA faz:</b> "+p.d+"</span>"; pBox.appendChild(d); });
+    const urg=state.answers.q12&&state.answers.q12.k;
+    const U={A:"Você disse que quer resolver isso esta semana. O primeiro passo é o curso — é ele que abre as soluções.",B:"Você quer resolver isso este mês. Comece pelo curso e chegue à implantação sabendo o que está contratando.",C:"Sem pressa: guarde este diagnóstico. Quando a dor apertar, o caminho já está mapeado."};
+    $("res-urgency").textContent=U[urg]||"";
+    const tBox=$("res-tags"); tBox.innerHTML=""; tags.forEach(t=>{ const s=document.createElement("span"); s.className="tag"; s.textContent=t; tBox.appendChild(s); });
+    const sBox=$("res-sols"); sBox.innerHTML="";
+    sols.forEach((s,i)=>{ const d=document.createElement("div"); d.className="sol";
+      d.innerHTML="<h3>"+s.nome+" <span style='color:var(--dado);font-family:JetBrains Mono,monospace;font-size:.72rem'>"+s.id+"</span></h3><p>"+s.desc+"</p><div class='price'>Mensalidade: sob consulta · exige curso R$ 97</div>";
+      sBox.appendChild(d); if(RM) d.classList.add("on"); else setTimeout(()=>d.classList.add("on"),450+i*350);
+    });
+    window.__QUIZ_RESULT__={score,level:level.name,tags,intent,solutions:sols.map(s=>s.id),priorities:pris.map(p=>p.t),rooms:lit,leadCaptured:!!state.lead};
+  }
+
+  $("btn-start").addEventListener("click",()=>{
+    state.started=true; state.i=0; camZ=2.5; camZTo=2.5;
+    show("screen-quiz"); setWake(1/12); triggerTravel(DOOR_STEP*0.92); renderQuestion();
+  });
+  $("btn-back").addEventListener("click",()=>{ if(state.i>0){ state.i--; renderQuestion(); triggerTravel(-DOOR_STEP*0.92); }});
+  $("btn-next").addEventListener("click",()=>{
+    if(!canAdvance()) return;
+    const q=QUESTIONS[state.i];
+    if(q.type==="text"){ const ta=$("q-text-input"); state.answers[q.id]={text:(ta&&ta.value||"").slice(0,280)}; }
+    setMoodFromTags(tagScores());
+    if(state.i < QUESTIONS.length-1){ state.i++; triggerTravel(DOOR_STEP*0.92); renderQuestion(); }
+    else { triggerTravel(DOOR_STEP*1.1); show("screen-lead"); setWake(0.92); setTimeout(()=>$("lead-nome").focus(),250); }
+  });
+  $("btn-lead-back").addEventListener("click",()=>{ show("screen-quiz"); renderQuestion(); });
+  $("lead-whatsapp").addEventListener("input",(e)=>maskWhatsApp(e.target));
+  $("lead-form").addEventListener("submit",(e)=>{ e.preventDefault(); const lead=validateLeadForm(); if(!lead) return; unlockResultLocally(lead); });
+  $("btn-restart").addEventListener("click",()=>{
+    state.i=0; state.answers={}; state.started=false; state.lead=null; state.litRooms=[];
+    camZ=2.5; camZTo=2.5; $("lead-form").reset();
+    ["err-nome","err-whatsapp","err-email","err-consent"].forEach(id=>{$(id).hidden=true;$(id).textContent=""});
+    ["field-nome","field-whatsapp","field-email"].forEach(id=>$(id).classList.remove("error"));
+    setWake(0); show("screen-start");
+  });
+  $("btn-cta").addEventListener("click",(e)=>e.preventDefault());
+  $("btn-motion").addEventListener("click",()=>{
+    RM=!RM; writePref("volt_reduce_motion", RM?"1":"0"); applyMotionPref(); resize();
+    if(RM){ traveling=false; camZ=camZTo; shake=0; $("travel-veil").classList.remove("on"); document.querySelectorAll(".sol").forEach(d=>d.classList.add("on")); if(state.litRooms.length) animateBuilding(state.litRooms); }
+  });
+
+  window.__QUIZ_TEST__ = {
+    QUESTIONS, CATALOG, VALID_DDD, get RM(){ return RM; }, CFG,
+    setAnswers(map){ state.answers=map; },
+    compute(){ renderResult(); return window.__QUIZ_RESULT__; },
+    knowledgeScore, levelFor, tagScores, topTags, recommendSolutions, intentOf,
+    validateWhatsApp, validateEmail, validateNome, validateLeadForm, normalizeWhatsApp,
+    showLead(){ show("screen-lead"); },
+    showResult(){ show("screen-result"); },
+    unlockWithFakeLead(){ state.lead={nome:"Fulano Teste",whatsapp:"+5511987654321",email:"fulano.teste@example.com",consent:true}; renderResult(); show("screen-result"); setWake(1); return window.__QUIZ_RESULT__; },
+    getState(){ return {i:state.i, hasLead:!!state.lead, wake, camZ, traveling, camZTo}; },
+    setWake, triggerTravel,
+    forceTravel(dz){ triggerTravel(dz==null?DOOR_STEP*0.92:dz); },
+    getCam(){ return {camZ, traveling, camZFrom, camZTo, wake, hue, dens}; }
+  };
+
+  applyMotionPref(); initTurnstile();
+  startFX(); setWake(0);
+})();
+</script>
+</body>
+</html>

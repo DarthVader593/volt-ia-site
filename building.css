@@ -1,0 +1,98 @@
+/* ===== Prédio-núcleo Volt IA ===== */
+.bsvg{overflow:visible;font-family:"JetBrains Mono",monospace}
+.bsvg *{transform-box:fill-box}
+.svg-mono{font:500 11px "JetBrains Mono",monospace;letter-spacing:.04em}
+.svg-label{font:700 13px "Space Grotesk",sans-serif}
+.svg-sign{font:900 24px "Unbounded",sans-serif;letter-spacing:.02em}
+/* núcleo */
+.lift .pk{animation:rise 3.2s linear infinite;animation-delay:var(--d)}
+@keyframes rise{from{transform:translateY(80px);opacity:0}15%{opacity:.9}85%{opacity:.9}to{transform:translateY(-120px);opacity:0}}
+.reactor .ring{transform-origin:center}
+.reactor .r1{animation:spin 9s linear infinite}.reactor .r2{animation:spin 14s linear infinite reverse}
+.reactor .r-pulse{transform-origin:center;animation:core 2.2s ease-in-out infinite}
+.reactor .r-halo{transform-origin:center;animation:halo 2.2s ease-in-out infinite}
+.reactor .pkt{animation:pktup 1.6s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes core{50%{transform:scale(1.08);stroke-width:3}}
+@keyframes halo{50%{transform:scale(1.15);opacity:.65}}
+@keyframes pktup{0%,100%{transform:translate(0,0)}50%{transform:translate(4px,-7px)}}
+.bsvg.hot .reactor .r-pulse,.bsvg.hot .reactor .r-halo{animation-duration:.9s}
+.beacon{animation:blink2 1.6s steps(1) infinite}.beacon-ring{transform-origin:center;animation:ping 1.6s ease-out infinite}
+@keyframes blink2{50%{opacity:.25}}
+@keyframes ping{from{transform:scale(1);opacity:1}to{transform:scale(4);opacity:0}}
+.win{animation:winb 4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes winb{50%{opacity:.2}}
+/* feixes */
+.beam .b-base{stroke:#2F343B;stroke-width:2.5;fill:none}
+.beam .b-end{fill:#C8FF2E;opacity:.6}
+.beam.on .b-end{opacity:1}
+.beam .b-flow{stroke:#C8FF2E;stroke-width:3;fill:none;stroke-dasharray:8 26;animation:beam 1.3s linear infinite;opacity:.6}
+.beam .b-port{fill:#07080A;stroke:#C8FF2E;stroke-width:2}
+@keyframes beam{to{stroke-dashoffset:-34}}
+.beam.on .b-flow{opacity:1;stroke-width:5;filter:drop-shadow(0 0 6px #C8FF2E);animation-duration:.45s}
+.beam.on .b-base{stroke:#C8FF2E;stroke-opacity:.35;stroke-width:7}
+/* salas */
+.room{cursor:pointer;outline:none}
+.room .r-frame{transition:stroke .3s,fill .3s}
+.room .r-label{opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s}
+.room .r-title{transition:fill .3s}
+.room .lamp{transition:opacity .3s}
+.room .r-led{animation:blink2 1.8s steps(1) infinite}
+.room.on .r-frame,.room:focus-visible .r-frame{stroke:#C8FF2E;fill:#0B0E08}
+.room.on .r-label,.room:focus-visible .r-label{opacity:1;transform:none}
+.room.on .r-title{fill:#C8FF2E}
+.room.on .lamp{opacity:1}
+.bsvg.focusing .room:not(.focus):not(.on){opacity:.45}
+.room{transition:opacity .5s}
+.botu.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.room .eye{animation:eyes 4s steps(1) infinite}
+@keyframes eyes{0%,46%,50%,100%{opacity:1}47%,49%{opacity:.1}}
+/* cenas */
+.chat{animation:chat 6s linear infinite}
+@keyframes chat{to{transform:translateY(-132px)}}
+.ticket .check{stroke-dasharray:30;stroke-dashoffset:30;animation:chk 3s ease-in-out infinite}
+@keyframes chk{30%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+.tk .tkc{opacity:.15;animation:tk 2.4s steps(1) infinite;animation-delay:var(--d)}
+@keyframes tk{0%{opacity:.15}40%,100%{opacity:1}}
+.wave rect{transform-origin:center;animation:wave .9s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes wave{50%{transform:scaleY(.25)}}
+.draw{stroke-dasharray:240;stroke-dashoffset:240;animation:draw 4s ease-in-out infinite}
+@keyframes draw{60%,100%{stroke-dashoffset:0}}
+.bar{transform-origin:bottom;animation:barz 2.4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes barz{50%{transform:scaleY(.4)}}
+.target{animation:tgt 4s ease-in-out infinite}
+@keyframes tgt{0%,55%{opacity:0;transform:translate(214px,76px) scale(.3)}65%,100%{opacity:1}}
+.target{transform-box:view-box}
+.tile{fill:#2F343B;animation:tile 3s steps(1) infinite;animation-delay:var(--d)}
+@keyframes tile{0%{fill:#2F343B}30%,100%{fill:#C8FF2E}}
+.cursorbox{animation:cbox 3s steps(9) infinite}
+@keyframes cbox{to{transform:translate(0,0)}}
+.spark{transform-origin:center;animation:sp 1.5s ease-in-out infinite}
+@keyframes sp{50%{transform:scale(.5) rotate(45deg);opacity:.4}}
+.crmflow{stroke-dasharray:30 300;animation:crm 3s linear infinite}
+@keyframes crm{to{stroke-dashoffset:-330}}
+.cn{transform-origin:center;animation:cn 2.4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes cn{50%{transform:scale(1.25)}}
+.slot{fill:#1B1E23;animation:slot 4.2s steps(1) infinite;animation-delay:var(--d)}
+@keyframes slot{0%{fill:#1B1E23}10%,60%{fill:#C8FF2E}61%,100%{fill:#1B1E23}}
+.hand{transform-origin:bottom center;animation:spin 3s linear infinite}
+.fbar{transform-origin:bottom;transform:scaleY(var(--h));animation:fbar 3s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes fbar{50%{transform:scaleY(calc(var(--h) * .8))}}
+.ledger{transform-origin:left;animation:led 2s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes led{0%{transform:scaleX(0)}50%,100%{transform:scaleX(1)}}
+.gear{animation:spin 5s linear infinite;transform-origin:center}
+.belt{animation:belt 4s linear infinite}
+@keyframes belt{to{transform:translateX(-200px)}}
+/* montagem */
+.bsvg .part{opacity:0;transform:translateY(-60px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i) * .16s)}
+.bsvg.built .part{opacity:1;transform:none}
+.bsvg .part.base{transform:translateY(40px)}
+.bsvg.built .part.base{transform:none}
+/* pausa fora da tela */
+.bsvg.paused *, .bsvg.paused{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){
+ .bsvg *{animation:none!important;transition:none!important}
+ .bsvg .part{opacity:1;transform:none}
+ .chat{transform:none}.ticket .check{stroke-dashoffset:0}.draw{stroke-dashoffset:0}.tile{fill:#C8FF2E}.target{opacity:1}
+}
