@@ -153,6 +153,81 @@ padding:18px 14px;border-radius:14px}
 .send-status.ok{border-color:rgba(200,255,46,.35)}
 .send-status.warn{border-color:rgba(255,90,31,.5)}
 .send-status button{margin-top:8px;padding:8px 14px;font-size:.8rem}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rv{margin-top:16px}
+.rv-on .rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.rv-on .rv.in{opacity:1;transform:none}
+.rx{border:1px solid rgba(200,255,46,.3);border-radius:16px;padding:14px;background:linear-gradient(160deg,rgba(200,255,46,.07),rgba(7,8,10,.55) 55%);box-shadow:0 0 40px rgba(200,255,46,.06)}
+.rx-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.rx-tag{font:500 10px/1 var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--volt)}
+.rx-id{font:500 10px/1 var(--fm);color:var(--dado)}
+.rx-body{display:flex;gap:14px;align-items:center}
+.gauge{position:relative;width:118px;height:118px;flex-shrink:0}
+.gauge svg{width:100%;height:100%;display:block}
+.g-bg{fill:none;stroke:var(--linha);stroke-width:9}
+.g-fg{fill:none;stroke:var(--volt);stroke-width:9;stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;filter:drop-shadow(0 0 6px rgba(200,255,46,.6));transition:stroke-dashoffset 1.6s cubic-bezier(.2,.7,.2,1)}
+.g-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-center b{font:700 1.9rem/1 var(--fd);color:var(--sinal)}
+.g-center small{font:500 10px/1 var(--fm);color:var(--dado);margin-top:4px}
+.rx-side{min-width:0}
+.rx-side .result-level{margin:0 0 6px}
+.rx-cap{font-size:.78rem;color:var(--dado);line-height:1.35;margin-bottom:8px}
+.rx-stats{list-style:none;display:grid;gap:3px;font-size:.84rem;color:var(--dado)}
+.rx-stats b{font:700 1rem var(--fd);color:var(--volt);margin-right:4px}
+.rooms-label{font:500 10px/1.3 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--dado);margin:14px 0 8px}
+.rooms-grid{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px}
+.rooms-grid li{font:500 .78rem var(--ft);padding:8px 10px;border-radius:9px;border:1px solid var(--linha);color:#9AA1AB;background:rgba(18,20,24,.6);display:flex;align-items:center;gap:7px;transition:all .6s ease}
+.rooms-grid li::before{content:"";width:7px;height:7px;border-radius:50%;background:#3A3F47;flex-shrink:0;transition:all .6s ease}
+.rooms-grid li.on{color:var(--sinal);border-color:rgba(200,255,46,.55);background:rgba(200,255,46,.09);box-shadow:0 0 14px rgba(200,255,46,.12)}
+.rooms-grid li.on::before{background:var(--volt);box-shadow:0 0 8px var(--volt)}
+.rooms-grid li .sr-only{position:absolute}
+.mirror{padding:14px;border-left:3px solid var(--volt);border-radius:0 12px 12px 0;background:rgba(200,255,46,.06)}
+.mirror p{font-size:.92rem;line-height:1.5;margin-top:4px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-top:26px}
+.sec-n{font:500 .72rem var(--fm);color:var(--void);background:var(--volt);border-radius:6px;padding:3px 6px}
+.sec-head h3{font-family:var(--fd);font-weight:700;font-size:1rem;line-height:1.25}
+.sec-sub{font-size:.86rem;color:var(--dado);line-height:1.4;margin-top:6px}
+.priorities .prio{padding:14px;border-radius:13px;border:1px solid rgba(200,255,46,.22);background:linear-gradient(180deg,rgba(18,20,24,.85),rgba(18,20,24,.55))}
+.prio-top{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.prio-n{font:700 1.4rem/1 var(--fd);color:var(--volt);min-width:26px}
+.prio-top strong{font-size:.95rem;line-height:1.25;margin:0}
+.said{display:inline-block;font:500 .72rem/1.3 var(--fm);color:var(--volt);border:1px solid rgba(200,255,46,.35);border-radius:8px;padding:4px 8px;margin-bottom:8px}
+.prio .row{display:block;font-size:.86rem;color:var(--dado);line-height:1.4;margin-top:6px;padding-left:10px;border-left:2px solid var(--linha)}
+.prio .row.ia{border-left-color:var(--volt)}
+.prio .row b{color:var(--sinal);display:block;font:500 .68rem var(--fm);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.prio .row.ia b{color:var(--volt)}
+.plan{list-style:none;display:grid;gap:0;counter-reset:p;position:relative}
+.plan li{position:relative;padding:0 0 16px 40px;font-size:.88rem;line-height:1.4;color:var(--dado)}
+.plan li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;border:1px solid var(--volt);color:var(--volt);font:700 .8rem/26px var(--fd);text-align:center;background:var(--void)}
+.plan li::after{content:"";position:absolute;left:13px;top:30px;bottom:2px;width:1px;background:linear-gradient(var(--volt),transparent)}
+.plan li:last-child::after{display:none}
+.plan li b{display:block;color:var(--sinal);font-weight:700;margin-bottom:2px}
+.offer{margin-top:26px;padding:18px 16px;border-radius:18px;border:1px solid var(--volt);background:radial-gradient(120% 90% at 0% 0%,rgba(200,255,46,.16),rgba(18,20,24,.7) 60%);box-shadow:0 0 36px rgba(200,255,46,.14)}
+.offer-h{font-family:var(--fd);font-weight:700;font-size:1.15rem;line-height:1.2;margin:2px 0 8px}
+.offer-lv{font-size:.86rem;color:var(--dado);line-height:1.45;margin-bottom:12px}
+.offer-list{list-style:none;display:grid;gap:8px;margin-bottom:14px}
+.offer-list li{position:relative;padding-left:26px;font-size:.88rem;line-height:1.35;color:var(--dado)}
+.offer-list li::before{content:"";position:absolute;left:2px;top:3px;width:12px;height:7px;border-left:2px solid var(--volt);border-bottom:2px solid var(--volt);transform:rotate(-45deg)}
+.offer-list b{color:var(--sinal);font-weight:700}
+.price-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 12px;border-radius:12px;background:rgba(7,8,10,.55);border:1px solid var(--linha)}
+.price-big{font:700 2rem/1 var(--fd);color:var(--volt)}
+.price-sub{font:500 .74rem/1.35 var(--fm);color:var(--dado)}
+.btn-lg{width:100%;padding:16px 18px;font-size:1rem;animation:ctaGlow 3.2s ease-in-out infinite}
+@keyframes ctaGlow{0%,100%{box-shadow:0 0 18px rgba(200,255,46,.25)}50%{box-shadow:0 0 30px rgba(200,255,46,.5)}}
+.trust{list-style:none;display:grid;gap:5px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(200,255,46,.2);font-size:.78rem;color:var(--dado);line-height:1.4}
+.trust b{color:var(--sinal)}
+.final-cta{margin-top:22px;text-align:center}
+.final-cta p{font-size:.9rem;color:var(--sinal);margin-bottom:10px;line-height:1.4}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(7,8,10,.94) 40%);transform:translateY(110%);transition:transform .4s ease;pointer-events:none;display:flex;justify-content:center}
+.sticky-cta.show{transform:none;pointer-events:auto}
+.sticky-cta .btn{width:100%;max-width:var(--max)}
+@media (min-width:861px){.sticky-cta{display:none}}
+@media (max-width:380px){.rx-body{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion: reduce){
+  .rv-on .rv{opacity:1;transform:none}.btn-lg{animation:none}.g-fg{transition:none}
+}
+html.reduce-motion .rv-on .rv,html.reduce-motion .rv{opacity:1!important;transform:none!important}
+html.reduce-motion .btn-lg{animation:none}
 @media (prefers-reduced-motion: reduce){
   .sol{opacity:1;transform:none}
   .travel-veil{display:none}
@@ -252,30 +327,65 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     <section id="screen-result" class="card hidden" data-screen="result">
       <div class="kicker">Núcleo acordado · seu diagnóstico</div>
       <h2 id="res-title" tabindex="-1">Nível indicado</h2>
-      <div class="result-level">
-        <span id="res-level">Iniciante</span>
-        <span class="score-pill">· conhecimento <span id="res-score">0</span>/12</span>
-      </div>
       <p class="lead" id="res-blurb"></p>
-      <div class="cta-box" id="res-mirror" style="margin-top:4px">
-        <div class="kicker">O que você nos contou</div>
-        <p id="res-mirror-text" style="margin-bottom:0"></p>
-      </div>
       <div class="send-status hidden" id="send-status" role="status"></div>
 
-      <div class="building-caption">Prédio · salas que a IA ocuparia</div>
-      <canvas id="building-stage" width="560" height="220" aria-label="Prédio com salas acendendo"></canvas>
+      <!-- 1. Raio-X -->
+      <div class="rx rv" aria-labelledby="rx-h">
+        <div class="rx-head"><span class="rx-tag">Raio-X do seu negócio</span><span class="rx-id" id="rx-id" aria-hidden="true"></span></div>
+        <h3 id="rx-h" class="sr-only">Raio-X do seu negócio</h3>
+        <div class="rx-body">
+          <div class="gauge" role="img" id="gauge-img" aria-label="">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="g-bg" cx="60" cy="60" r="52"/>
+              <circle class="g-fg" id="g-fg" cx="60" cy="60" r="52" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="g-center"><b id="g-num">0</b><small>de 12</small></div>
+          </div>
+          <div class="rx-side">
+            <div class="result-level"><span id="res-level">Iniciante</span><span class="score-pill">· <span id="res-score">0</span>/12</span></div>
+            <p class="rx-cap">Maturidade em IA, calculada só pelas suas respostas sobre uso de IA e automação.</p>
+            <ul class="rx-stats">
+              <li><b id="rx-n-areas">0</b> áreas com dor mapeada</li>
+              <li><b id="rx-n-sols">0</b> soluções indicadas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="rooms-label">Prédio da sua empresa · salas acesas = onde a IA entra primeiro</div>
+        <ul class="rooms-grid" id="rooms-grid"></ul>
+        <canvas id="building-stage" width="560" height="220" aria-label="Prédio com as salas indicadas para o seu negócio acendendo"></canvas>
+        <div class="tag-row" id="res-tags"></div>
+      </div>
 
-      <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:.95rem;margin-top:14px">3 prioridades para começar</h3>
+      <!-- 2. Espelho -->
+      <div class="mirror rv" id="res-mirror">
+        <div class="kicker">O que você nos contou</div>
+        <p id="res-mirror-text"></p>
+      </div>
+
+      <!-- 3. Gargalos + o que muda -->
+      <div class="sec-head rv"><span class="sec-n">01</span><h3>Seus 3 maiores gargalos</h3></div>
+      <p class="sec-sub rv">Montados com as dores que você marcou. Em cada um: o que isso custa hoje e o que a IA pode fazer.</p>
       <div class="priorities" id="res-priorities"></div>
-      <div class="tag-row" id="res-tags"></div>
 
-      <div class="cta-box">
-        <div class="kicker">Próximo passo</div>
-        <p id="res-urgency" style="color:var(--sinal);margin:4px 0 8px"></p>
-        <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:1rem">Curso de entrada — R$&nbsp;97</h3>
-        <p id="res-course">Compra única. Obrigatório para contratar qualquer solução do catálogo. Sem promessa de faturamento.</p>
-        <button class="btn btn-primary" type="button" id="btn-cta">Quero o curso — gerar Pix de R$&nbsp;97</button>
+      <!-- 4. Plano -->
+      <div class="sec-head rv"><span class="sec-n">02</span><h3>Seu plano de ação</h3></div>
+      <ol class="plan rv" id="res-plan"></ol>
+      <p class="note rv" id="res-urgency" style="color:var(--sinal)"></p>
+
+      <!-- 5. Oferta -->
+      <div class="offer rv" id="offer-box">
+        <div class="kicker">Seu próximo passo</div>
+        <h3 class="offer-h">Curso de entrada Volt IA</h3>
+        <p class="offer-lv" id="res-course"></p>
+        <ul class="offer-list">
+          <li><b>32 aulas em 4 trilhas</b> para aprender a usar IA no dia a dia do negócio</li>
+          <li><b>Slides narrados</b> para ver no celular, no seu ritmo</li>
+          <li><b>Diagnóstico por aula</b> para aplicar na sua realidade</li>
+          <li><b>Acesso às 44 soluções na loja</b> da Volt IA</li>
+        </ul>
+        <div class="price-row"><span class="price-big">R$&nbsp;97</span><span class="price-sub">pagamento único<br>sem mensalidade no curso</span></div>
+        <button class="btn btn-primary btn-lg" type="button" id="btn-cta">Quero o curso — gerar Pix de R$&nbsp;97</button>
         <button class="btn btn-ghost hidden" type="button" id="btn-cta-cartao" style="margin-top:8px">Pagar com cartão de crédito</button>
         <div class="field hidden" id="cartao-doc" style="margin-top:10px">
           <label for="doc-cartao">CPF ou CNPJ do titular do cartão</label>
@@ -284,11 +394,22 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
           <button class="btn btn-primary" type="button" id="btn-cartao-ir" style="margin-top:8px">Continuar para o cartão</button>
         </div>
         <p class="note" id="cta-msg" role="status" style="margin-top:8px">Pagamento por Pix. O acesso ao curso aparece na própria página assim que o pagamento for confirmado.</p>
+        <ul class="trust">
+          <li>Pagamento para <b>NEXOR MOTORS LTDA</b>, CNPJ 54.814.770/0001-05.</li>
+          <li>Direito de arrependimento de <b>7 dias</b> (Código de Defesa do Consumidor).</li>
+          <li>O curso ensina a usar. Sem promessa de faturamento: o resultado depende da sua rotina.</li>
+        </ul>
       </div>
 
-      <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:.95rem">As salas que acenderam para você</h3>
-      <p class="note" style="margin-top:4px">Mensalidade sob consulta. Toda solução começa pelo curso — é ele que garante que você sabe o que está contratando.</p>
+      <!-- 6. Soluções -->
+      <div class="sec-head rv"><span class="sec-n">03</span><h3>As salas que acenderam para você</h3></div>
+      <p class="sec-sub rv">Preços na versão Pequena; a Média entrega mais volume. Toda solução começa pelo curso, que garante que você sabe o que está contratando.</p>
       <div class="sols" id="res-sols"></div>
+
+      <div class="final-cta rv">
+        <p>Seu diagnóstico está pronto. O próximo passo é o curso de R$&nbsp;97, pagamento único.</p>
+        <button class="btn btn-primary btn-lg" type="button" id="btn-cta-fim">Quero o curso — R$&nbsp;97</button>
+      </div>
 
       <div class="lgpd">
         <strong style="color:var(--sinal)">Aviso LGPD (rascunho):</strong>
@@ -296,6 +417,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
       </div>
       <div class="actions"><button class="btn btn-ghost" type="button" id="btn-restart">Refazer diagnóstico</button></div>
     </section>
+    <div class="sticky-cta" id="sticky-cta" aria-hidden="true"><button class="btn btn-primary" type="button" id="btn-cta-sticky" tabindex="-1">Quero o curso — R$&nbsp;97</button></div>
 
     <p class="foot">Volt IA · uma empresa Darth Lab · <a href="https://volt-ia-leads.nodeonetec.workers.dev/suporte" style="color:var(--dado)">Suporte</a></p>
   </div>
@@ -305,16 +427,16 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
 <script>
 (function(){
   const CATALOG = {
-    atendimento: { id:"S01", nome:"Agente de atendimento Nexor", desc:"Responde na hora, qualifica e passa para você só quem está pronto para comprar — inclusive de madrugada e no fim de semana.", room:"Atendimento" },
-    crm: { id:"S07", nome:"CRM leve", desc:"Todo contato vira oportunidade com dono e próximo passo. Ninguém mais some no meio da conversa.", room:"CRM" },
-    posts: { id:"S04", nome:"Gestor de posts", desc:"Calendário e rascunhos prontos para aprovar. Você para de improvisar post às 23h.", room:"Conteúdo" },
-    criativos: { id:"S03", nome:"Gestor de criativos", desc:"Variações de peça com a sua marca a partir de um briefing — sempre com revisão humana antes de ir ao ar.", room:"Criativos" },
-    trafego: { id:"S02", nome:"Gestor de tráfego", desc:"Rotina semanal de leitura e ajuste das campanhas, assistida por IA, na sua própria conta de anúncios.", room:"Tráfego" },
-    financeiro: { id:"S05", nome:"Sistema financeiro", desc:"Entradas, saídas e contas a pagar numa tela só. Você decide olhando o caixa, não a memória.", room:"Financeiro" },
-    agenda: { id:"S06", nome:"Sistema de agendamento", desc:"Agenda, confirmação e lembrete automáticos para quem vive de horário marcado.", room:"Agenda" },
-    erp: { id:"S08", nome:"ERP leve para PME", desc:"Estoque, pedidos e financeiro básico conversando entre si — com escopo fechado, sem projeto infinito.", room:"Operação" },
-    implantacao: { id:"S10", nome:"Pacote implantação “nós montamos”", desc:"A equipe Volt IA configura e entrega a solução com você, seguindo checklist. Você não precisa virar técnico.", room:"Implantação" },
-    comunidade: { id:"S09", nome:"Comunidade de membros", desc:"Templates, atualizações e gente resolvendo os mesmos problemas que você.", room:"Comunidade" }
+    atendimento: { id:"V1", nome:"Agentes Nexor", preco:"R$ 597/mês + R$ 497 de implantação", desc:"Responde na hora, qualifica e passa para você só quem está pronto para comprar — inclusive de madrugada e no fim de semana.", room:"Atendimento" },
+    crm: { id:"V2", nome:"CRM + follow-up automático", preco:"R$ 297/mês + R$ 497 de implantação", desc:"Todo contato vira oportunidade com dono e próximo passo. Ninguém mais some no meio da conversa.", room:"CRM" },
+    posts: { id:"M2", nome:"Posts para redes", preco:"R$ 497/mês + R$ 297 de implantação", desc:"Calendário e rascunhos prontos para aprovar. Você para de improvisar post às 23h.", room:"Conteúdo" },
+    criativos: { id:"M1", nome:"Criativos de anúncio", preco:"R$ 697/mês + R$ 297 de implantação", desc:"Variações de peça com a sua marca a partir de um briefing — sempre com revisão humana antes de ir ao ar.", room:"Criativos" },
+    trafego: { id:"M3", nome:"Gestor de tráfego IA", preco:"R$ 897/mês + R$ 497 de implantação", desc:"Rotina semanal de leitura e ajuste das campanhas, assistida por IA, na sua própria conta de anúncios.", room:"Tráfego" },
+    financeiro: { id:"F1", nome:"Financeiro / fluxo de caixa", preco:"R$ 297/mês + R$ 497 de implantação", desc:"Entradas, saídas e contas a pagar numa tela só. Você decide olhando o caixa, não a memória.", room:"Financeiro" },
+    agenda: { id:"O1", nome:"Agendamento + lembretes no WhatsApp", preco:"R$ 197/mês + R$ 297 de implantação", desc:"Agenda, confirmação e lembrete automáticos para quem vive de horário marcado.", room:"Agenda" },
+    erp: { id:"O2", nome:"ERP leve / estoque", preco:"R$ 497/mês + R$ 1.497 de implantação", desc:"Estoque, pedidos e financeiro básico conversando entre si — com escopo fechado, sem projeto infinito.", room:"Operação" },
+    implantacao: { id:"X1", nome:"Fábrica de automações (nós montamos)", preco:"R$ 497/mês + R$ 997 de implantação", desc:"Automações sob medida entre as ferramentas que você já usa, montadas e mantidas pela equipe Volt IA. Você não precisa virar técnico.", room:"Implantação" },
+    comunidade: { id:"C1", nome:"Comunidade de membros", preco:"R$ 47/mês + R$ 47 de entrada", desc:"Templates, atualizações e gente resolvendo os mesmos problemas que você.", room:"Comunidade" }
   };
   const ROOM_ORDER = ["Atendimento","CRM","Conteúdo","Criativos","Tráfego","Financeiro","Agenda","Operação","Implantação","Comunidade"];
   const ROOM_TAGS = {
@@ -844,7 +966,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   /* ========== Lógica v1.1 ========== */
   function show(id){
     ["screen-start","screen-quiz","screen-lead","screen-result"].forEach(s=>$(s).classList.toggle("hidden", s!==id));
-    $("core-hud").classList.toggle("visible", id!=="screen-start");
+    $("core-hud").classList.toggle("visible", id!=="screen-start" && id!=="screen-result");
     state.mode = id;
   }
   function selectedOption(q){ const a=state.answers[q.id]; if(!a||a.k==null) return null; return q.options.find(o=>o.k===a.k)||null; }
@@ -1038,29 +1160,107 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     return s;
   }
 
+  const EXEMPLO = {
+    atendimento:"Cliente chama no WhatsApp às 22h e recebe resposta na hora, com horário e informações. De manhã você vê só quem quer fechar.",
+    crm:"Quem pediu orçamento e sumiu recebe um lembrete no dia certo. Você abre a lista e sabe quem chamar hoje.",
+    posts:"Na segunda você abre o calendário da semana com rascunhos prontos e só aprova.",
+    criativos:"A partir de um briefing, saem variações de peça com a sua marca para você escolher.",
+    trafego:"Toda semana, um resumo do que as campanhas trouxeram e o que vale ajustar.",
+    financeiro:"Contas a pagar e entradas do dia numa tela só, em vez de caçar número em planilha.",
+    agenda:"O cliente recebe confirmação e lembrete sozinho. Horário vago vira aviso, não surpresa.",
+    erp:"Pedido, estoque e equipe no mesmo painel. A equipe consulta ali antes de perguntar para você.",
+    implantacao:"Você aprova um checklist e a equipe Volt IA monta a solução com você.",
+    comunidade:"Dúvida travou? Você pergunta e usa templates prontos, em vez de testar tudo sozinho."
+  };
+  function evidenceFor(tag){
+    const order=["q4","q5","q3","q1","q2","q6","q10","q11"]; let best=null;
+    order.forEach(id=>{ const q=QUESTIONS.find(x=>x.id===id); if(!q) return;
+      selectedOptions(q).forEach(o=>{ const w=o.tags&&o.tags[tag]; if(w>0 && (!best||w>best.w)) best={w,label:o.label}; }); });
+    return best?best.label:"";
+  }
+  function el(tag,cls,txt){ const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+  let rvObs=null;
+  function setupReveal(){
+    const sec=$("screen-result"); const items=sec.querySelectorAll(".rv");
+    if(rvObs){ rvObs.disconnect(); rvObs=null; }
+    if(RM || !("IntersectionObserver" in window)){ sec.classList.remove("rv-on"); items.forEach(i=>i.classList.add("in")); return; }
+    items.forEach(i=>i.classList.remove("in")); sec.classList.add("rv-on");
+    rvObs=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); rvObs.unobserve(e.target); } }); },{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+    items.forEach(i=>rvObs.observe(i));
+  }
+  function animateGauge(score){
+    const fg=$("g-fg"), num=$("g-num"), C=326.7, target=C*(1-score/12);
+    $("gauge-img").setAttribute("aria-label","Maturidade em IA: "+score+" de 12");
+    if(RM){ fg.style.transition="none"; fg.style.strokeDashoffset=target; num.textContent=String(score); return; }
+    fg.style.transition=""; fg.style.strokeDashoffset=C; num.textContent="0";
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ fg.style.strokeDashoffset=target; }));
+    const t0=performance.now(), dur=1600;
+    (function step(now){ const k=Math.min(1,(now-t0)/dur); num.textContent=String(Math.round(score*(1-Math.pow(1-k,3)))); if(k<1) requestAnimationFrame(step); })(t0);
+  }
+
   function renderResult(){
     const score=knowledgeScore(), level=levelFor(score), scores=tagScores(), tags=topTags(scores,4), intent=intentOf();
     const sols=recommendSolutions(tags,intent), pris=prioritiesFrom(tags,intent);
     $("res-level").textContent=level.name; $("res-score").textContent=String(score);
     const nm=state.lead?firstName(state.lead.nome):"";
-    $("res-title").textContent=(nm?nm+", seu nível: ":"Seu nível: ")+level.name; $("res-blurb").textContent=level.blurb;
+    $("res-title").textContent=(nm?nm+", seu diagnóstico: nível ":"Seu diagnóstico: nível ")+level.name; $("res-blurb").textContent=level.blurb;
     $("res-mirror-text").textContent=mirrorText();
-    $("res-course").textContent=level.course+" Compra única de R$ 97 — a porta de entrada para qualquer solução Volt IA. Sem promessa de faturamento: o curso ensina a usar, o resultado depende da sua rotina.";
+    $("res-course").textContent=level.course;
     const lit=sols.map(s=>s.room); state.litRooms=lit;
+    /* Raio-X */
+    const litAll=new Set(lit); tags.forEach(t=>{ if(CATALOG[t]) litAll.add(CATALOG[t].room); });
+    const pain=tags.filter(t=>CATALOG[t]&&t!=="implantacao"&&t!=="comunidade");
+    $("rx-n-areas").textContent=String(pain.length); $("rx-n-sols").textContent=String(sols.length);
+    $("rx-id").textContent="DIAG-"+(state.lead&&state.lead.clientId?String(state.lead.clientId).slice(0,6).toUpperCase():"LOCAL");
+    const rg=$("rooms-grid"); rg.innerHTML="";
+    ROOM_ORDER.forEach((r,i)=>{ const on=litAll.has(r); const li=el("li",on?"on":"",r);
+      if(on) li.appendChild(el("span","sr-only"," (acesa: indicada para o seu caso)"));
+      rg.appendChild(li); });
+    animateGauge(score);
     animateBuilding(lit);
+    /* Gargalos */
     const pBox=$("res-priorities"); pBox.innerHTML="";
-    pris.forEach((p,i)=>{ const d=document.createElement("div"); d.className="prio"; d.innerHTML="<strong>"+(i+1)+". "+p.t+"</strong>"+(p.c?"<span class='prio-c'><b>O que custa hoje:</b> "+p.c+"</span>":"")+"<span><b>O que a IA faz:</b> "+p.d+"</span>"; pBox.appendChild(d); });
+    pris.forEach((p,i)=>{
+      const key=Object.keys(PRIORITY_COPY).find(k=>PRIORITY_COPY[k]===p)||"";
+      const d=el("div","prio rv"); const top=el("div","prio-top");
+      top.appendChild(el("span","prio-n",String(i+1))); top.appendChild(el("strong",null,p.t)); d.appendChild(top);
+      const ev=key?evidenceFor(key):"";
+      if(ev) d.appendChild(el("span","said","Você marcou: “"+ev+"”"));
+      if(p.c){ const r=el("span","row"); r.appendChild(el("b",null,"O que isso custa hoje")); r.appendChild(document.createTextNode(p.c)); d.appendChild(r); }
+      const r2=el("span","row ia"); r2.appendChild(el("b",null,"O que a IA faz")); r2.appendChild(document.createTextNode(p.d)); d.appendChild(r2);
+      if(EXEMPLO[key]){ const r3=el("span","row ia"); r3.appendChild(el("b",null,"Na prática")); r3.appendChild(document.createTextNode(EXEMPLO[key])); d.appendChild(r3); }
+      pBox.appendChild(d);
+    });
+    /* Plano */
+    const first=pris[0]?pris[0].t:"sua primeira prioridade";
+    const plan=$("res-plan"); plan.innerHTML="";
+    [["Comece pelo curso ("+level.name+")",level.course.replace(/^Para você:\s*/,"")],
+     ["Aplique no seu primeiro gargalo","“"+first+"”: com o que aprendeu, você coloca a IA para trabalhar nele primeiro."],
+     ["Escolha a solução certa","Com o curso feito, você escolhe na loja as soluções indicadas aqui e sabe o que está contratando."]
+    ].forEach(x=>{ const li=el("li"); li.appendChild(el("b",null,x[0])); li.appendChild(document.createTextNode(x[1])); plan.appendChild(li); });
     const urg=state.answers.q12&&state.answers.q12.k;
-    const U={A:"Você disse que quer resolver isso esta semana. O primeiro passo é o curso — é ele que abre as soluções.",B:"Você quer resolver isso este mês. Comece pelo curso e chegue à implantação sabendo o que está contratando.",C:"Sem pressa: guarde este diagnóstico. Quando a dor apertar, o caminho já está mapeado."};
+    const U={A:"Você disse que quer resolver isso esta semana. O primeiro passo é o curso, que abre as soluções.",B:"Você quer resolver isso este mês. Comece pelo curso e chegue à implantação sabendo o que está contratando.",C:"Sem pressa: guarde este diagnóstico. Quando a dor apertar, o caminho já está mapeado."};
     $("res-urgency").textContent=U[urg]||"";
     const tBox=$("res-tags"); tBox.innerHTML=""; tags.forEach(t=>{ const s=document.createElement("span"); s.className="tag"; s.textContent=(CATALOG[t]&&CATALOG[t].room)||t; tBox.appendChild(s); });
     const sBox=$("res-sols"); sBox.innerHTML="";
     sols.forEach((s,i)=>{ const d=document.createElement("div"); d.className="sol";
-      d.innerHTML="<h3>"+s.nome+" <span style='color:var(--dado);font-family:JetBrains Mono,monospace;font-size:.72rem'>"+s.id+"</span></h3><p>"+s.desc+"</p><div class='price'>Mensalidade: sob consulta · exige curso R$ 97</div>";
+      d.innerHTML="<h3>"+s.nome+" <span style='color:var(--dado);font-family:JetBrains Mono,monospace;font-size:.72rem'>"+s.id+"</span></h3><p>"+s.desc+"</p><div class='price'>A partir de "+s.preco+" · começa pelo curso de R$ 97</div>";
       sBox.appendChild(d); if(RM) d.classList.add("on"); else setTimeout(()=>d.classList.add("on"),450+i*350);
     });
+    setupReveal();
     window.__QUIZ_RESULT__={score,level:level.name,tags,intent,solutions:sols.map(s=>s.id),priorities:pris.map(p=>p.t),rooms:lit,leadCaptured:!!state.lead};
   }
+  /* CTA repetido: rola até a oferta e usa o mesmo botão de compra (mesma lógica). */
+  function goOffer(){ const o=$("offer-box"); if(o) o.scrollIntoView({behavior:RM?"auto":"smooth",block:"center"}); }
+  $("btn-cta-fim").addEventListener("click",()=>{ goOffer(); $("btn-cta").click(); });
+  $("btn-cta-sticky").addEventListener("click",()=>{ goOffer(); $("btn-cta").focus({preventScroll:true}); });
+  (function(){ const st=$("sticky-cta"), off=$("offer-box"), res=$("screen-result"); if(!("IntersectionObserver" in window)) return;
+    let offerSeen=false, fimSeen=false;
+    const upd=()=>{ const on=!res.classList.contains("hidden") && !offerSeen && !fimSeen && window.scrollY>600; st.classList.toggle("show",on); st.setAttribute("aria-hidden",on?"false":"true"); $("btn-cta-sticky").tabIndex=on?0:-1; };
+    new IntersectionObserver(es=>{ offerSeen=es[0].isIntersecting; upd(); }).observe(off);
+    new IntersectionObserver(es=>{ fimSeen=es[0].isIntersecting; upd(); }).observe($("btn-cta-fim"));
+    addEventListener("scroll",upd,{passive:true}); new MutationObserver(upd).observe(res,{attributes:true,attributeFilter:["class"]});
+  })();
 
   $("btn-start").addEventListener("click",()=>{ track("inicio_quiz");
     state.started=true; state.i=0; camZ=2.5; camZTo=2.5;
@@ -1098,6 +1298,11 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     ["field-nome","field-whatsapp","field-email"].forEach(id=>$(id).classList.remove("error"));
     setWake(0); show("screen-start");
   });
+  /* Se o registro do diagnóstico falhou (rede, limite, anti-robô), a compra leva os contatos junto — a venda não trava. */
+  function compraBody(extra){
+    const L=state.lead, enviado=window.__QUIZ_SEND__ && window.__QUIZ_SEND__.mode==="sent";
+    return Object.assign({client_id:L.clientId}, enviado ? {} : {contato:{nome:L.nome,email:L.email,whatsapp:L.whatsapp,consent:true}}, extra);
+  }
   /* Cartão (Asaas): o botão só aparece se o servidor disser que o cartão está ativo. */
   if(CFG.LEADS_ENDPOINT){
     fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar")).then(r=>r.json()).then(j=>{ if(j&&j.cartao) $("btn-cta-cartao").classList.remove("hidden"); }).catch(()=>{});
@@ -1106,26 +1311,23 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   $("btn-cartao-ir").addEventListener("click", async ()=>{
     const b=$("btn-cartao-ir"), msg=$("cta-msg"), doc=$("doc-cartao").value;
     if(doc.replace(/\D/g,"").length<11){ msg.textContent="Informe o CPF ou CNPJ do titular."; $("doc-cartao").focus(); return; }
-    if(!state.lead || !state.lead.clientId || !window.__QUIZ_SEND__ || window.__QUIZ_SEND__.mode!=="sent"){ msg.textContent="Estamos terminando de registrar seu diagnóstico. Tente de novo em alguns segundos."; return; }
+    if(!state.lead || !state.lead.clientId){ msg.textContent="Compra indisponível nesta versão. Fale com a Volt IA."; return; }
     b.disabled=true; b.textContent="Abrindo o pagamento…";
     try{
-      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({client_id:state.lead.clientId,forma:"cartao",cpf_cnpj:doc})});
+      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(compraBody({forma:"cartao",cpf_cnpj:doc}))});
       const j=await res.json().catch(()=>({}));
       if(res.ok && j.ok && j.link){ track("checkout_curso"); location.href=j.link; return; }
       throw new Error(j.error||"erro");
-    }catch(err){ b.disabled=false; b.textContent="Continuar para o cartão"; msg.textContent= String(err.message).includes("cpf_cnpj") ? "CPF ou CNPJ inválido." : "Não foi possível abrir o pagamento com cartão agora. Use o Pix."; }
+    }catch(err){ b.disabled=false; b.textContent="Continuar para o cartão"; msg.textContent= /cpf/i.test(String(err.message)) ? "CPF ou CNPJ inválido." : "Não foi possível abrir o pagamento com cartão agora. Use o Pix."; }
   });
   /* Compra do curso: gera o Pix na hora (rota pública do Worker) e leva à página de pagamento. */
   $("btn-cta").addEventListener("click", async (e)=>{
     e.preventDefault();
     const b=$("btn-cta"), msg=$("cta-msg");
     if(!CFG.LEADS_ENDPOINT || !state.lead || !state.lead.clientId){ msg.textContent="Compra indisponível nesta versão. Fale com a Volt IA."; return; }
-    if(!window.__QUIZ_SEND__ || window.__QUIZ_SEND__.mode!=="sent"){
-      msg.textContent="Estamos terminando de registrar seu diagnóstico. Tente de novo em alguns segundos."; if(lastPayload) sendLead(lastPayload); return;
-    }
     b.disabled=true; b.textContent="Gerando o seu Pix…";
     try{
-      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({client_id:state.lead.clientId})});
+      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(compraBody({}))});
       const j=await res.json().catch(()=>({}));
       if(res.ok && j.ok && j.link){ track("checkout_curso"); location.href=j.link; return; }
       throw new Error(j.error||("http_"+res.status));

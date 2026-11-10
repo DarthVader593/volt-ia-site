@@ -235,3 +235,14 @@ html.reduce-motion .progress,html.reduce-motion .hint{display:none}
 html.reduce-motion .static-floors{display:grid;gap:14px;width:min(1180px,100% - 48px);margin:30px auto 0}
 html.reduce-motion .tip{display:none!important}
 html.reduce-motion .stage-halo{display:none}
+/* Celular estreito: o cabeçalho cabe em 360–480px (botão de movimento vira ícone; o nome acessível continua no texto). */
+@media (max-width:480px){
+ .motion-toggle{font-size:0;padding:7px 10px;line-height:1}
+ .motion-toggle::before{content:"◐";font-size:15px;line-height:1}
+ .nav-in{min-width:0}
+ .nav .brand{flex:0 1 auto;min-width:0}
+ .nav .brand img{max-width:104px;height:auto}
+ .nav-actions{gap:6px;flex:0 0 auto}
+ .nav .btn{padding:9px 10px;font-size:10px}
+ html,body{overflow-x:clip}
+}
