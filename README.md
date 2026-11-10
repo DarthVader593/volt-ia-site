@@ -1,4 +1,3 @@
-# Volt IA — site público
+# volt-ia-site (aposentado)
 
-Landing, diagnóstico (quiz) e política de privacidade da Volt IA.
-Gerado a partir do repositório privado com `scripts/build-site.sh`. Não editar aqui.
+O site da Volt IA mudou para https://voltiabrasil.com. Este repositório só redireciona os endereços antigos.
