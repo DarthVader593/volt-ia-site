@@ -945,14 +945,15 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   }
   /* ========== Envio do lead (Worker) + fallback localStorage ========== */
   function uuid(){ try{ return crypto.randomUUID(); }catch(e){ return "id-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10); } }
-  let turnstileToken="", lastPayload=null, waitingToken=null;
+  let turnstileToken="", lastPayload=null, waitingToken=null, tsFalhou=false;
   const TS_ON = !!(CFG.TURNSTILE_SITEKEY && CFG.LEADS_ENDPOINT);
   const QUEUE_TTL_MS = 7*24*3600*1000;
   function initTurnstile(){
     if(!TS_ON) return;
     window.__voltTurnstileCb=(t)=>{ turnstileToken=t; if(waitingToken){ const f=waitingToken; waitingToken=null; f(t); } };
     window.__voltTurnstileExpired=()=>{ turnstileToken=""; };
-    window.__voltTurnstileLoad=()=>{ try{ window.turnstile.render("#turnstile-box",{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:"__voltTurnstileCb","expired-callback":"__voltTurnstileExpired"}); }catch(e){} };
+    window.__voltTurnstileLoad=()=>{ try{ window.turnstile.render("#turnstile-box",{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:"__voltTurnstileCb","expired-callback":"__voltTurnstileExpired","error-callback":"__voltTurnstileErr"}); }catch(e){ window.__voltTurnstileErr(); } };
+    window.__voltTurnstileErr=()=>{ tsFalhou=true; if(waitingToken){ const f=waitingToken; waitingToken=null; f(""); } return true; };
     const s=document.createElement("script");
     s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__voltTurnstileLoad&render=explicit"; s.async=true; s.defer=true;
     document.head.appendChild(s);
@@ -960,17 +961,16 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   /* Token do Turnstile é de uso único: cada envio pega um novo. */
   /* Token novo para cada envio. Se não houver um pronto (ex.: reenvio, quando o
      formulário já sumiu), mostra um widget novo junto à mensagem de status. */
+  /* Token do Turnstile (uso único). Nunca trava o quiz: se a verificação não
+     concluir em alguns segundos (navegador do Instagram, bloqueador, rede), envia
+     sem token — o servidor aceita com limite mais rígido e marca "não verificado". */
   function freshToken(){
-    if(!TS_ON) return Promise.resolve("");
+    if(!TS_ON || tsFalhou) return Promise.resolve("");
     if(turnstileToken){ const t=turnstileToken; turnstileToken=""; return Promise.resolve(t); }
     return new Promise(res=>{
-      let done=false; const finish=(t)=>{ if(done) return; done=true; res(t||""); };
-      try{
-        const box=document.createElement("div"); box.className="ts-retry"; box.style.marginTop="10px";
-        const host=$("send-status"); host.appendChild(document.createTextNode(" Confirme a verificação anti-robô abaixo:")); host.appendChild(box);
-        window.turnstile.render(box,{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:(t)=>finish(t),"error-callback":()=>finish("")});
-      }catch(e){ finish(""); }
-      setTimeout(()=>finish(""),120000);
+      let done=false; const finish=(t)=>{ if(done) return; done=true; turnstileToken=""; res(t||""); };
+      waitingToken=finish; setTimeout(()=>{ if(waitingToken===finish) waitingToken=null; finish(""); },6000);
+      try{ if(window.turnstile) window.turnstile.reset("#turnstile-box"); }catch(e){}
     });
   }
   function answersMap(){
@@ -1003,11 +1003,6 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     }
     setSendStatus("","Registrando seu diagnóstico…");
     const token=await freshToken();
-    if(TS_ON && !token){
-      queueLocally(payload);
-      setSendStatus("warn","A verificação anti-robô não concluiu. Seu diagnóstico continua aqui na tela."+RESEND_BTN);
-      window.__QUIZ_SEND__={mode:"failed",error:"turnstile_sem_token"}; return;
-    }
     let res=null, j={};
     try{
       res=await fetch(CFG.LEADS_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({},payload,{turnstile_token:token}))});
@@ -1085,12 +1080,12 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   let pendingLead=null;
   $("lead-form").addEventListener("submit",(e)=>{
     e.preventDefault(); const lead=validateLeadForm(); if(!lead) return;
-    if(TS_ON && !turnstileToken){
-      /* Espera a verificação anti-robô concluir antes de liberar (o widget fica visível só nesta tela). */
+    if(TS_ON && !turnstileToken && !tsFalhou){
+      /* Dá até 4 s para a verificação anti-robô concluir; depois segue de qualquer jeito. */
       pendingLead=lead;
       const b=$("btn-lead-submit"); b.disabled=true; b.textContent="Verificando…";
-      $("err-consent").hidden=false; $("err-consent").textContent="Aguarde a verificação anti-robô logo acima concluir — o diagnóstico abre sozinho.";
-      waitingToken=(t)=>{ turnstileToken=t; const L=pendingLead; pendingLead=null; b.disabled=false; b.textContent="Liberar diagnóstico"; $("err-consent").hidden=true; if(L) unlockResultLocally(L); };
+      const go=(t)=>{ if(!pendingLead) return; if(t) turnstileToken=t; const L=pendingLead; pendingLead=null; waitingToken=null; b.disabled=false; b.textContent="Liberar diagnóstico"; unlockResultLocally(L); };
+      waitingToken=go; setTimeout(()=>go(""),4000);
       return;
     }
     unlockResultLocally(lead);
