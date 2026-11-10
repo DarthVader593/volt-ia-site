@@ -240,11 +240,11 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
           <label for="lead-consent">Autorizo a Volt IA / Darth Lab a registrar meu nome, WhatsApp, e-mail e as respostas deste diagnóstico para entrar em contato sobre o resultado e enviar ofertas relacionadas aos produtos da Volt IA. Este formulário usa a verificação anti-robô da Cloudflare. Posso pedir a exclusão dos meus dados a qualquer momento. Li a <a href="../privacidade/" target="_blank" rel="noopener">política de privacidade (rascunho)</a>.</label>
         </div>
         <div class="err" id="err-consent" role="alert" hidden></div>
+        <div id="turnstile-box" style="margin-top:12px;min-height:0"></div>
         <div class="actions">
           <button class="btn btn-ghost" type="button" id="btn-lead-back">Voltar</button>
           <button class="btn btn-primary" type="submit" id="btn-lead-submit">Liberar diagnóstico</button>
         </div>
-        <div id="turnstile-box" style="margin-top:12px"></div>
         <p class="note">Diagnóstico grátis. Sem spam: usamos seus dados só para o diagnóstico e ofertas da Volt IA, e você sai quando quiser.</p>
       </form>
     </section>
@@ -950,11 +950,20 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     document.head.appendChild(s);
   }
   /* Token do Turnstile é de uso único: cada envio pega um novo. */
+  /* Token novo para cada envio. Se não houver um pronto (ex.: reenvio, quando o
+     formulário já sumiu), mostra um widget novo junto à mensagem de status. */
   function freshToken(){
     if(!TS_ON) return Promise.resolve("");
     if(turnstileToken){ const t=turnstileToken; turnstileToken=""; return Promise.resolve(t); }
-    try{ window.turnstile&&window.turnstile.reset("#turnstile-box"); }catch(e){}
-    return new Promise(res=>{ waitingToken=(t)=>{ turnstileToken=""; res(t); }; setTimeout(()=>{ if(waitingToken){ waitingToken=null; res(""); } },30000); });
+    return new Promise(res=>{
+      let done=false; const finish=(t)=>{ if(done) return; done=true; res(t||""); };
+      try{
+        const box=document.createElement("div"); box.className="ts-retry"; box.style.marginTop="10px";
+        const host=$("send-status"); host.appendChild(document.createTextNode(" Confirme a verificação anti-robô abaixo:")); host.appendChild(box);
+        window.turnstile.render(box,{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:(t)=>finish(t),"error-callback":()=>finish("")});
+      }catch(e){ finish(""); }
+      setTimeout(()=>finish(""),120000);
+    });
   }
   function answersMap(){
     const out={};
@@ -1065,7 +1074,19 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   });
   $("btn-lead-back").addEventListener("click",()=>{ show("screen-quiz"); renderQuestion(); });
   $("lead-whatsapp").addEventListener("input",(e)=>maskWhatsApp(e.target));
-  $("lead-form").addEventListener("submit",(e)=>{ e.preventDefault(); const lead=validateLeadForm(); if(!lead) return; unlockResultLocally(lead); });
+  let pendingLead=null;
+  $("lead-form").addEventListener("submit",(e)=>{
+    e.preventDefault(); const lead=validateLeadForm(); if(!lead) return;
+    if(TS_ON && !turnstileToken){
+      /* Espera a verificação anti-robô concluir antes de liberar (o widget fica visível só nesta tela). */
+      pendingLead=lead;
+      const b=$("btn-lead-submit"); b.disabled=true; b.textContent="Verificando…";
+      $("err-consent").hidden=false; $("err-consent").textContent="Aguarde a verificação anti-robô logo acima concluir — o diagnóstico abre sozinho.";
+      waitingToken=(t)=>{ turnstileToken=t; const L=pendingLead; pendingLead=null; b.disabled=false; b.textContent="Liberar diagnóstico"; $("err-consent").hidden=true; if(L) unlockResultLocally(L); };
+      return;
+    }
+    unlockResultLocally(lead);
+  });
   $("btn-restart").addEventListener("click",()=>{
     clearQueue(); lastPayload=null;
     state.i=0; state.answers={}; state.started=false; state.lead=null; state.litRooms=[];
