@@ -275,7 +275,8 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
         <p id="res-urgency" style="color:var(--sinal);margin:4px 0 8px"></p>
         <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:1rem">Curso de entrada — R$&nbsp;97</h3>
         <p id="res-course">Compra única. Obrigatório para contratar qualquer solução do catálogo. Sem promessa de faturamento.</p>
-        <button class="btn btn-draft" type="button" id="btn-cta" aria-disabled="true">Quero o curso R$&nbsp;97</button>
+        <button class="btn btn-primary" type="button" id="btn-cta">Quero o curso — gerar Pix de R$&nbsp;97</button>
+        <p class="note" id="cta-msg" role="status" style="margin-top:8px">Pagamento por Pix. O acesso ao curso aparece na própria página assim que o pagamento for confirmado.</p>
       </div>
 
       <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:.95rem">As salas que acenderam para você</h3>
@@ -1095,7 +1096,25 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     ["field-nome","field-whatsapp","field-email"].forEach(id=>$(id).classList.remove("error"));
     setWake(0); show("screen-start");
   });
-  $("btn-cta").addEventListener("click",(e)=>e.preventDefault());
+  /* Compra do curso: gera o Pix na hora (rota pública do Worker) e leva à página de pagamento. */
+  $("btn-cta").addEventListener("click", async (e)=>{
+    e.preventDefault();
+    const b=$("btn-cta"), msg=$("cta-msg");
+    if(!CFG.LEADS_ENDPOINT || !state.lead || !state.lead.clientId){ msg.textContent="Compra indisponível nesta versão. Fale com a Volt IA."; return; }
+    if(!window.__QUIZ_SEND__ || window.__QUIZ_SEND__.mode!=="sent"){
+      msg.textContent="Estamos terminando de registrar seu diagnóstico. Tente de novo em alguns segundos."; if(lastPayload) sendLead(lastPayload); return;
+    }
+    b.disabled=true; b.textContent="Gerando o seu Pix…";
+    try{
+      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({client_id:state.lead.clientId})});
+      const j=await res.json().catch(()=>({}));
+      if(res.ok && j.ok && j.link){ track("checkout_curso"); location.href=j.link; return; }
+      throw new Error(j.error||("http_"+res.status));
+    }catch(err){
+      b.disabled=false; b.textContent="Quero o curso — gerar Pix de R$ 97";
+      msg.textContent="Não foi possível gerar o Pix agora. Tente de novo em instantes.";
+    }
+  });
   $("btn-motion").addEventListener("click",()=>{
     RM=!RM; writePref("volt_reduce_motion", RM?"1":"0"); applyMotionPref(); resize();
     if(RM){ traveling=false; camZ=camZTo; shake=0; $("travel-veil").classList.remove("on"); document.querySelectorAll(".sol").forEach(d=>d.classList.add("on")); if(state.litRooms.length) animateBuilding(state.litRooms); }
