@@ -393,6 +393,14 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     CONSENT_TEXT_VERSION: "2026-11-09-v2"
   }, window.VOLT_CONFIG||{});
   const QUEUE_KEY = "volt_lead_pending";
+  /* Funil anônimo: só o tipo do evento (sem cookie, sem identificador). Só conta no site publicado. */
+  const EVENT_URL = CFG.LEADS_ENDPOINT ? CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/evento") : "";
+  const TRACK_ON = !!EVENT_URL && /\.github\.io$/.test(location.hostname);
+  const tracked = {};
+  function track(tipo){
+    if(!TRACK_ON || tracked[tipo]) return; tracked[tipo]=true;
+    try{ navigator.sendBeacon(EVENT_URL, new Blob([JSON.stringify({tipo})],{type:"text/plain"})); }catch(e){}
+  }
 
   function applyMotionPref(){
     document.documentElement.classList.toggle("reduce-motion", RM);
@@ -1002,7 +1010,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   }
   async function unlockResultLocally(lead){
     lead.clientId=lead.clientId||uuid();
-    state.lead=lead; renderResult(); show("screen-result"); setWake(1); triggerTravel(CORE_Z-camZ-20);
+    state.lead=lead; renderResult(); show("screen-result"); track("resultado"); setWake(1); triggerTravel(CORE_Z-camZ-20);
     setTimeout(()=>{ try{ $("res-title").focus({preventScroll:false}); }catch(e){} },60);
     sendLead(buildPayload(lead));
   }
@@ -1042,7 +1050,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     window.__QUIZ_RESULT__={score,level:level.name,tags,intent,solutions:sols.map(s=>s.id),priorities:pris.map(p=>p.t),rooms:lit,leadCaptured:!!state.lead};
   }
 
-  $("btn-start").addEventListener("click",()=>{
+  $("btn-start").addEventListener("click",()=>{ track("inicio_quiz");
     state.started=true; state.i=0; camZ=2.5; camZTo=2.5;
     show("screen-quiz"); setWake(1/12); triggerTravel(DOOR_STEP*0.92); renderQuestion();
   });
@@ -1053,7 +1061,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     if(q.type==="text"){ const ta=$("q-text-input"); state.answers[q.id]={text:(ta&&ta.value||"").slice(0,280)}; }
     setMoodFromTags(tagScores());
     if(state.i < QUESTIONS.length-1){ state.i++; triggerTravel(DOOR_STEP*0.92); renderQuestion(); $("q-text").focus(); }
-    else { triggerTravel(DOOR_STEP*1.1); show("screen-lead"); setWake(0.92); setTimeout(()=>$("lead-nome").focus(),250); }
+    else { triggerTravel(DOOR_STEP*1.1); show("screen-lead"); track("tela_captura"); setWake(0.92); setTimeout(()=>$("lead-nome").focus(),250); }
   });
   $("btn-lead-back").addEventListener("click",()=>{ show("screen-quiz"); renderQuestion(); });
   $("lead-whatsapp").addEventListener("input",(e)=>maskWhatsApp(e.target));

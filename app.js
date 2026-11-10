@@ -1,5 +1,7 @@
 /* Volt IA landing v3: prédio-núcleo. JS leve, sem dependências */
 (()=>{
+/* Funil anônimo: conta 1 visita por carregamento (sem cookie, sem identificador). Só no site publicado. */
+if(/\.github\.io$/.test(location.hostname)){ try{ navigator.sendBeacon('https://volt-ia-leads.nodeonetec.workers.dev/evento', new Blob([JSON.stringify({tipo:'visita_landing'})],{type:'text/plain'})); }catch(e){} }
 const d=document, RM=matchMedia('(prefers-reduced-motion: reduce)').matches||d.documentElement.classList.contains('reduce-motion');
 /* botão visível "Reduzir movimento": grava preferência e recarrega (o layout do palco muda) */
 const mb=d.getElementById('btnMotion');
