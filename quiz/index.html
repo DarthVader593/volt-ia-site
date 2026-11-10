@@ -276,6 +276,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
         <h3 style="font-family:Unbounded,sans-serif;font-weight:500;font-size:1rem">Curso de entrada — R$&nbsp;97</h3>
         <p id="res-course">Compra única. Obrigatório para contratar qualquer solução do catálogo. Sem promessa de faturamento.</p>
         <button class="btn btn-primary" type="button" id="btn-cta">Quero o curso — gerar Pix de R$&nbsp;97</button>
+        <button class="btn btn-ghost hidden" type="button" id="btn-cta-cartao" style="margin-top:8px">Pagar com cartão de crédito</button>
         <p class="note" id="cta-msg" role="status" style="margin-top:8px">Pagamento por Pix. O acesso ao curso aparece na própria página assim que o pagamento for confirmado.</p>
       </div>
 
@@ -1095,6 +1096,23 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     ["err-nome","err-whatsapp","err-email","err-consent"].forEach(id=>{$(id).hidden=true;$(id).textContent=""});
     ["field-nome","field-whatsapp","field-email"].forEach(id=>$(id).classList.remove("error"));
     setWake(0); show("screen-start");
+  });
+  /* Cartão (Asaas): o botão só aparece se o servidor disser que o cartão está ativo. */
+  if(CFG.LEADS_ENDPOINT){
+    fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar")).then(r=>r.json()).then(j=>{ if(j&&j.cartao) $("btn-cta-cartao").classList.remove("hidden"); }).catch(()=>{});
+  }
+  $("btn-cta-cartao").addEventListener("click", async ()=>{
+    const b=$("btn-cta-cartao"), msg=$("cta-msg");
+    if(!state.lead || !state.lead.clientId || !window.__QUIZ_SEND__ || window.__QUIZ_SEND__.mode!=="sent"){ msg.textContent="Estamos terminando de registrar seu diagnóstico. Tente de novo em alguns segundos."; return; }
+    const doc=prompt("Cartão de crédito (processado pelo Asaas). Informe o CPF ou CNPJ do titular:");
+    if(!doc) return;
+    b.disabled=true; b.textContent="Abrindo o pagamento…";
+    try{
+      const res=await fetch(CFG.LEADS_ENDPOINT.replace(/\/leads$/,"/curso/comprar"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({client_id:state.lead.clientId,forma:"cartao",cpf_cnpj:doc})});
+      const j=await res.json().catch(()=>({}));
+      if(res.ok && j.ok && j.link){ track("checkout_curso"); location.href=j.link; return; }
+      throw new Error(j.error||"erro");
+    }catch(err){ b.disabled=false; b.textContent="Pagar com cartão de crédito"; msg.textContent= String(err.message).includes("cpf_cnpj") ? "CPF ou CNPJ inválido." : "Não foi possível abrir o pagamento com cartão agora. Use o Pix."; }
   });
   /* Compra do curso: gera o Pix na hora (rota pública do Worker) e leva à página de pagamento. */
   $("btn-cta").addEventListener("click", async (e)=>{
