@@ -69,6 +69,7 @@ h2{font-family:var(--fd);font-weight:700;font-size:clamp(1.05rem,3vw,1.35rem);li
 .bar{height:7px;background:var(--linha);border-radius:999px;overflow:hidden}
 .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--volt),#9BE01A);border-radius:999px;transition:width .35s ease;box-shadow:0 0 12px rgba(200,255,46,.5)}
 .q-label{font-size:.88rem;color:var(--dado);margin-bottom:4px}
+.q-text:focus{outline:none}
 .q-text{font-family:var(--fd);font-weight:500;font-size:1.05rem;line-height:1.35;margin-bottom:14px}
 .options{display:grid;gap:8px}
 .opt{width:100%;text-align:left;cursor:pointer;border:1px solid var(--linha);background:rgba(18,20,24,.88);color:var(--sinal);
@@ -175,8 +176,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     <header class="topbar">
       <a href="../" aria-label="Volt IA — início"><img class="logo" src="assets/logo/lockup.svg" alt="Volt IA"></a>
       <div style="display:flex;gap:6px;align-items:center">
-        <span class="badge">versão de lançamento</span>
-        <button class="badge motion-toggle" type="button" id="btn-motion" aria-pressed="false">Reduzir movimento</button>
+                <button class="badge motion-toggle" type="button" id="btn-motion" aria-pressed="false">Reduzir movimento</button>
       </div>
     </header>
 
@@ -185,12 +185,12 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
       <h1>Quanto do seu dia ainda depende só de você?</h1>
       <p class="lead">Mensagem sem resposta, agenda furada, caixa no escuro, equipe esperando você decidir. Em 12 perguntas o núcleo de IA percorre o seu prédio sala por sala e mostra <strong style="color:var(--sinal)">onde o seu negócio está vazando tempo e cliente</strong> — e por onde começar.</p>
       <div class="actions"><button class="btn btn-primary" type="button" id="btn-start">Começar meu diagnóstico</button></div>
-      <p class="note">Leva poucos minutos. Sem cadastro para começar. Sem promessa de renda — aqui a gente fala de rotina, não de milagre.</p>
+      <p class="note">Leva poucos minutos. No final pedimos nome, WhatsApp e e-mail para liberar e registrar o seu diagnóstico. Sem promessa de renda — aqui a gente fala de rotina, não de milagre.</p>
       <div class="receive" aria-label="O que você recebe">
         <div class="receive-title">No fim, você leva</div>
         <ul class="receive-list">
           <li><strong>Seu nível real com IA</strong> — Iniciante, Intermediário ou Avançado, e o que estudar primeiro.</li>
-          <li><strong>3 prioridades com o seu nome</strong> — tiradas das suas respostas, não de uma lista genérica.</li>
+          <li><strong>3 prioridades para o seu caso</strong> — montadas a partir das dores que você marcar.</li>
           <li><strong>As salas que a IA ocuparia</strong> — até 3 soluções do catálogo Volt IA que combinam com o seu caso.</li>
         </ul>
       </div>
@@ -206,7 +206,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
       </div>
       <p class="q-feedback hidden" id="q-feedback" aria-live="polite"></p>
       <div class="q-label" id="q-label">Bloco A</div>
-      <div class="q-text" id="q-text"></div>
+      <div class="q-text" id="q-text" tabindex="-1" aria-live="polite"></div>
       <div id="q-body"></div>
       <div class="actions">
         <button class="btn btn-ghost" type="button" id="btn-back">Voltar</button>
@@ -217,7 +217,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     <section id="screen-lead" class="card hidden" data-screen="lead" aria-labelledby="lead-title">
       <div class="kicker">Porta do núcleo · diagnóstico pronto</div>
       <h2 id="lead-title"><span id="lead-greet">Seu prédio já foi mapeado.</span></h2>
-      <p class="lead" id="lead-lead">O núcleo cruzou as suas 12 respostas e já sabe quais salas acendem primeiro. Seu resultado fica pronto em segundos. Só precisamos saber para onde enviar.</p>
+      <p class="lead" id="lead-lead">O núcleo cruzou as suas 12 respostas e já sabe quais salas acendem primeiro. Seu resultado aparece na próxima tela. Deixe seus contatos para registrar o diagnóstico — a equipe Volt IA pode falar com você pelo WhatsApp ou e-mail informados.</p>
       <form id="lead-form" novalidate>
         <div class="field" id="field-nome">
           <label for="lead-nome">Nome completo</label>
@@ -237,7 +237,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
         </div>
         <div class="consent" id="field-consent">
           <input type="checkbox" id="lead-consent" name="consent" required aria-describedby="err-consent">
-          <label for="lead-consent">Autorizo a Volt IA / Darth Lab a usar meu nome, WhatsApp e e-mail para me enviar este diagnóstico e ofertas relacionadas aos produtos da Volt IA. Posso pedir a exclusão dos meus dados a qualquer momento. Li a <a href="../privacidade/" target="_blank" rel="noopener">política de privacidade (rascunho)</a>.</label>
+          <label for="lead-consent">Autorizo a Volt IA / Darth Lab a registrar meu nome, WhatsApp, e-mail e as respostas deste diagnóstico para entrar em contato sobre o resultado e enviar ofertas relacionadas aos produtos da Volt IA. Este formulário usa a verificação anti-robô da Cloudflare. Posso pedir a exclusão dos meus dados a qualquer momento. Li a <a href="../privacidade/" target="_blank" rel="noopener">política de privacidade (rascunho)</a>.</label>
         </div>
         <div class="err" id="err-consent" role="alert" hidden></div>
         <div class="actions">
@@ -251,7 +251,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
 
     <section id="screen-result" class="card hidden" data-screen="result">
       <div class="kicker">Núcleo acordado · seu diagnóstico</div>
-      <h2 id="res-title">Nível indicado</h2>
+      <h2 id="res-title" tabindex="-1">Nível indicado</h2>
       <div class="result-level">
         <span id="res-level">Iniciante</span>
         <span class="score-pill">· conhecimento <span id="res-score">0</span>/12</span>
@@ -284,12 +284,12 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
 
       <div class="lgpd">
         <strong style="color:var(--sinal)">Aviso LGPD (rascunho):</strong>
-        com o seu consentimento, nome, WhatsApp e e-mail são usados só para enviar este diagnóstico e ofertas da Volt IA / Darth Lab. Não vendemos nem repassamos seus dados. Você pode pedir acesso, correção ou exclusão a qualquer momento. Veja a <a href="../privacidade/" style="color:var(--volt)">política de privacidade (rascunho)</a>.
+        com o seu consentimento, nome, WhatsApp, e-mail e respostas são usados só para contato sobre este diagnóstico e ofertas da Volt IA / Darth Lab. Não vendemos seus dados; usamos apenas fornecedores técnicos necessários (hospedagem e verificação anti-robô), sob contrato. Você pode pedir acesso, correção ou exclusão a qualquer momento. Veja a <a href="../privacidade/" style="color:var(--volt)">política de privacidade (rascunho)</a>.
       </div>
       <div class="actions"><button class="btn btn-ghost" type="button" id="btn-restart">Refazer diagnóstico</button></div>
     </section>
 
-    <p class="foot">Volt IA · holding Darth Lab · peça-modelo quiz-v2 · 09/11/2026</p>
+    <p class="foot">Volt IA · uma empresa Darth Lab</p>
   </div>
   <aside class="rail" aria-hidden="true"><div class="rail-hint">núcleo →</div></aside>
 </div>
@@ -326,15 +326,15 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
       options:[{k:"A",label:"Respondo cliente o dia inteiro — de madrugada também",tags:{atendimento:3}},{k:"B",label:"Pensar e fazer post",tags:{posts:3,criativos:2}},{k:"C",label:"Correr atrás de quem pediu orçamento e sumiu",tags:{crm:2,atendimento:1}},{k:"D",label:"Conta, boleto e planilha",tags:{financeiro:3}},{k:"E",label:"Marcar, remarcar e confirmar horário",tags:{agenda:3}},{k:"F",label:"Equipe que depende de mim para tudo",tags:{crm:1,erp:2}}]},
     {id:"q5", block:"B — Onde dói", blockShort:"Onde dói", text:"Onde o cliente (ou o dinheiro) some no seu negócio?", type:"single",
       options:[{k:"A",label:"Cliente pergunta, demora a resposta e some",tags:{atendimento:3,crm:2}},{k:"B",label:"Chega pouca gente nova",tags:{trafego:3,criativos:1}},{k:"C",label:"Meus anúncios e posts não chamam atenção",tags:{criativos:3,posts:1}},{k:"D",label:"Não sei direito quanto entra e quanto sai",tags:{financeiro:3}},{k:"E",label:"Falta, atraso e horário vago na agenda",tags:{agenda:3}},{k:"F",label:"Não sei dizer — e isso me preocupa",tags:{}}]},
-    {id:"q6", block:"B — Onde dói", blockShort:"Onde dói", text:"Hoje, o que segura o negócio no digital? (até 2)", type:"multi", max:2,
+    {id:"q6", block:"B — Onde dói", blockShort:"Onde dói", text:"Hoje, o seu negócio roda em quê? (até 2)", type:"multi", max:2,
       options:[{k:"A",label:"WhatsApp Business",tags:{atendimento:1}},{k:"B",label:"Planilha",tags:{financeiro:1}},{k:"C",label:"Sistema de caixa / PDV",tags:{financeiro:1}},{k:"D",label:"Um CRM",tags:{crm:1}},{k:"E",label:"Um ERP",tags:{erp:1}},{k:"F",label:"Quase nada — está tudo na minha cabeça",tags:{}}]},
     {id:"q10", block:"B — Onde dói", blockShort:"Onde dói", text:"O que você já tentou para resolver isso?", type:"single",
       options:[{k:"A",label:"Nada ainda — não sobra tempo nem para pensar nisso",tags:{implantacao:2}},{k:"B",label:"Testei um aplicativo sozinho e larguei",tags:{}},{k:"C",label:"Paguei alguém e não resolveu",tags:{}},{k:"D",label:"Já tenho algo funcionando e quero ir além",tags:{}}]},
     {id:"q7", block:"C — Você e a IA", blockShort:"Conhecimento", text:"Você já usou ChatGPT, Claude, Gemini ou similar para trabalhar?", type:"single", scoreKey:"knowledge",
       options:[{k:"A",label:"Nunca usei",score:0},{k:"B",label:"Testei por curiosidade",score:2},{k:"C",label:"Uso de vez em quando",score:4},{k:"D",label:"Uso todo dia",score:6}]},
-    {id:"q8", block:"C — Conhecimento", blockShort:"Conhecimento", text:"Alguma tarefa do seu negócio já roda sozinha, sem você?", type:"single", scoreKey:"knowledge",
+    {id:"q8", block:"C — Você e a IA", blockShort:"Você e a IA", text:"Alguma tarefa do seu negócio já roda sozinha, sem você?", type:"single", scoreKey:"knowledge",
       options:[{k:"A",label:"Não, nenhuma",score:0},{k:"B",label:"Tentei, mas abandonei",score:2},{k:"C",label:"Tenho algo simples funcionando",score:4},{k:"D",label:"Tenho um fluxo completo rodando",score:6}]},
-    {id:"q9", block:"C — Conhecimento", blockShort:"Conhecimento", text:"Se a IA resolvesse UMA coisa no seu negócio amanhã, qual seria?", type:"text", placeholder:"Ex.: parar de perder cliente no WhatsApp quando estou atendendo na loja"},
+    {id:"q9", block:"C — Você e a IA", blockShort:"Você e a IA", text:"Se a IA resolvesse UMA coisa no seu negócio amanhã, qual seria? (opcional)", type:"text", placeholder:"Ex.: parar de perder cliente no WhatsApp quando estou atendendo na loja"},
     {id:"q11", block:"D — Como resolver", blockShort:"Como resolver", text:"Como você prefere dar o primeiro passo?", type:"single", intent:true,
       options:[{k:"A",label:"Quero aprender e fazer eu mesmo",intent:"solo",tags:{comunidade:2}},{k:"B",label:"Quero que alguém monte e me entregue pronto",intent:"done",tags:{implantacao:3}},{k:"C",label:"Os dois: entender o que estou contratando e ter quem monte",intent:"both",tags:{implantacao:2,comunidade:1}}]},
     {id:"q12", block:"D — Como resolver", blockShort:"Como resolver", text:"Última: quando você quer resolver isso?", type:"single",
@@ -348,7 +348,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
       if(a("q3")==="A") return "Negócio que vende pelo WhatsApp vive da velocidade da resposta. Vamos ver onde o seu está travando.";
       return "Agora a parte que importa: onde o seu negócio está perdendo tempo e cliente.";
     }
-    if(qid==="q7") return "Quase todo dono acha que o problema é falta de cliente. Muitas vezes é o que acontece depois que o cliente chega. Agora, a sua relação com a IA.";
+    if(qid==="q7") return "Muito dono acha que o problema é falta de cliente. Muitas vezes é o que acontece depois que o cliente chega. Agora, a sua relação com a IA.";
     if(qid==="q11") return "Falta pouco. Não existe resposta certa aqui — só a que combina com a sua rotina.";
     return "";
   }
@@ -388,9 +388,9 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
 
   /* ========== CONFIG DE ENVIO (preencher após deploy do Worker — ver leads-worker/README.md) ========== */
   const CFG = Object.assign({
-    LEADS_ENDPOINT: "",          // ex.: "https://volt-ia-leads.<conta>.workers.dev/leads"
-    TURNSTILE_SITEKEY: "",       // sitekey pública do widget Turnstile
-    CONSENT_TEXT_VERSION: "2026-11-09-v1"
+    LEADS_ENDPOINT: "https://volt-ia-leads.nodeonetec.workers.dev/leads",
+    TURNSTILE_SITEKEY: "0x4AAAAAAF6pLRiLiTKnwQAk", // pública (widget volt-ia-quiz)
+    CONSENT_TEXT_VERSION: "2026-11-09-v2"
   }, window.VOLT_CONFIG||{});
   const QUEUE_KEY = "volt_lead_pending";
 
@@ -929,49 +929,81 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
   }
   /* ========== Envio do lead (Worker) + fallback localStorage ========== */
   function uuid(){ try{ return crypto.randomUUID(); }catch(e){ return "id-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10); } }
-  let turnstileToken="";
+  let turnstileToken="", lastPayload=null, waitingToken=null;
+  const TS_ON = !!(CFG.TURNSTILE_SITEKEY && CFG.LEADS_ENDPOINT);
+  const QUEUE_TTL_MS = 7*24*3600*1000;
   function initTurnstile(){
-    if(!CFG.TURNSTILE_SITEKEY || !CFG.LEADS_ENDPOINT) return;
-    window.__voltTurnstileCb=(t)=>{ turnstileToken=t; };
-    window.__voltTurnstileLoad=()=>{ try{ window.turnstile.render("#turnstile-box",{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:"__voltTurnstileCb"}); }catch(e){} };
+    if(!TS_ON) return;
+    window.__voltTurnstileCb=(t)=>{ turnstileToken=t; if(waitingToken){ const f=waitingToken; waitingToken=null; f(t); } };
+    window.__voltTurnstileExpired=()=>{ turnstileToken=""; };
+    window.__voltTurnstileLoad=()=>{ try{ window.turnstile.render("#turnstile-box",{sitekey:CFG.TURNSTILE_SITEKEY,theme:"dark",callback:"__voltTurnstileCb","expired-callback":"__voltTurnstileExpired"}); }catch(e){} };
     const s=document.createElement("script");
     s.src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__voltTurnstileLoad&render=explicit"; s.async=true; s.defer=true;
     document.head.appendChild(s);
+  }
+  /* Token do Turnstile é de uso único: cada envio pega um novo. */
+  function freshToken(){
+    if(!TS_ON) return Promise.resolve("");
+    if(turnstileToken){ const t=turnstileToken; turnstileToken=""; return Promise.resolve(t); }
+    try{ window.turnstile&&window.turnstile.reset("#turnstile-box"); }catch(e){}
+    return new Promise(res=>{ waitingToken=(t)=>{ turnstileToken=""; res(t); }; setTimeout(()=>{ if(waitingToken){ waitingToken=null; res(""); } },30000); });
+  }
+  function answersMap(){
+    const out={};
+    QUESTIONS.forEach(q=>{ if(q.type==="text") return; const ks=keysOf(state.answers[q.id]); if(ks.length) out[q.id]=ks.join(","); });
+    return out;
   }
   function buildPayload(lead){
     const r=window.__QUIZ_RESULT__||{};
     const q9=state.answers.q9&&state.answers.q9.text||"";
     return { nome:lead.nome, whatsapp:lead.whatsapp, email:lead.email, consent:true, consent_at:lead.consentAt,
-      consent_text_version:CFG.CONSENT_TEXT_VERSION, turnstile_token:turnstileToken, source:"quiz-v2",
-      result:{level:r.level,score:r.score,tags:r.tags||[],solutions:r.solutions||[],intent:r.intent,rooms:r.rooms||[]},
+      consent_text_version:CFG.CONSENT_TEXT_VERSION, turnstile_token:"", source:"quiz-v2",
+      result:{level:r.level,score:r.score,tags:r.tags||[],solutions:r.solutions||[],intent:r.intent,rooms:r.rooms||[],priorities:r.priorities||[],urgency:(state.answers.q12&&state.answers.q12.k)||"",answers:answersMap()},
       q9_text:q9.slice(0,280), client_id:lead.clientId };
   }
-  function queueLocally(payload){ writePref(QUEUE_KEY, JSON.stringify(payload)); }
+  function queueLocally(payload){ const p=Object.assign({},payload,{turnstile_token:""}); writePref(QUEUE_KEY, JSON.stringify({saved_at:Date.now(),payload:p})); }
+  function clearQueue(){ try{ localStorage.removeItem(QUEUE_KEY); }catch(e){} }
+  function pruneQueue(){ try{ const raw=readPref(QUEUE_KEY); if(!raw) return; const o=JSON.parse(raw); if(!o||!o.saved_at||Date.now()-o.saved_at>QUEUE_TTL_MS) clearQueue(); }catch(e){ clearQueue(); } }
   function setSendStatus(kind,html){
     const el=$("send-status"); el.className="send-status "+kind; el.innerHTML=html;
-    const rb=$("btn-resend"); if(rb) rb.addEventListener("click",()=>{ const p=readPref(QUEUE_KEY); if(p){ try{ sendLead(JSON.parse(p)); }catch(e){} } });
+    const rb=$("btn-resend"); if(rb) rb.addEventListener("click",()=>{ if(lastPayload) sendLead(lastPayload); });
   }
+  const RESEND_BTN='<br><button class="btn btn-ghost" type="button" id="btn-resend">Tentar enviar de novo</button>';
   async function sendLead(payload){
+    lastPayload=payload;
     if(!CFG.LEADS_ENDPOINT){
       queueLocally(payload);
-      setSendStatus("warn","Seu diagnóstico está aqui na tela. O envio da cópia por e-mail/WhatsApp ainda não está ativo nesta versão — seus dados ficaram guardados só neste navegador.");
+      setSendStatus("warn","Seu diagnóstico está aqui na tela. O registro dos seus contatos ainda não está ativo nesta versão — por enquanto, seus dados ficaram guardados só neste navegador (por até 7 dias).");
       window.__QUIZ_SEND__={mode:"local-only"}; return;
     }
-    setSendStatus("","Enviando sua cópia do diagnóstico…");
+    setSendStatus("","Registrando seu diagnóstico…");
+    const token=await freshToken();
+    if(TS_ON && !token){
+      queueLocally(payload);
+      setSendStatus("warn","A verificação anti-robô não concluiu. Seu diagnóstico continua aqui na tela."+RESEND_BTN);
+      window.__QUIZ_SEND__={mode:"failed",error:"turnstile_sem_token"}; return;
+    }
+    let res=null, j={};
     try{
-      const res=await fetch(CFG.LEADS_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-      const j=await res.json().catch(()=>({}));
-      if(res.ok && j.ok){ try{ localStorage.removeItem(QUEUE_KEY); }catch(e){} setSendStatus("ok","Pronto. Sua cópia do diagnóstico foi registrada — fique de olho no WhatsApp e no e-mail."); window.__QUIZ_SEND__={mode:"sent",id:j.id}; return; }
-      throw new Error(j.error||("http_"+res.status));
+      res=await fetch(CFG.LEADS_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({},payload,{turnstile_token:token}))});
+      j=await res.json().catch(()=>({}));
     }catch(err){
       queueLocally(payload);
-      setSendStatus("warn",'Não conseguimos registrar sua cópia agora (conexão instável). Seu diagnóstico continua aqui na tela. <br><button class="btn btn-ghost" type="button" id="btn-resend">Tentar enviar de novo</button>');
-      window.__QUIZ_SEND__={mode:"failed",error:String(err&&err.message||err)};
+      setSendStatus("warn","Não conseguimos registrar agora — parece ser a conexão. Seu diagnóstico continua aqui na tela."+RESEND_BTN);
+      window.__QUIZ_SEND__={mode:"failed",error:"rede"}; return;
     }
+    if(res.ok && j.ok){ clearQueue(); setSendStatus("ok","Pronto. Seu diagnóstico foi registrado. A equipe Volt IA pode entrar em contato pelo WhatsApp ou e-mail informados."); window.__QUIZ_SEND__={mode:"sent",id:j.id}; return; }
+    queueLocally(payload);
+    const msg = res.status===429 ? "Muitas tentativas seguidas. Espere alguns minutos e tente de novo."
+      : res.status>=500 ? "Nosso sistema não respondeu agora. Seu diagnóstico continua aqui na tela."
+      : "Não conseguimos validar o envio (verificação ou dados). Seu diagnóstico continua aqui na tela.";
+    setSendStatus("warn",msg+RESEND_BTN);
+    window.__QUIZ_SEND__={mode:"failed",error:j.error||("http_"+res.status)};
   }
   async function unlockResultLocally(lead){
     lead.clientId=lead.clientId||uuid();
     state.lead=lead; renderResult(); show("screen-result"); setWake(1); triggerTravel(CORE_Z-camZ-20);
+    setTimeout(()=>{ try{ $("res-title").focus({preventScroll:false}); }catch(e){} },60);
     sendLead(buildPayload(lead));
   }
   function firstName(n){ return String(n||"").trim().split(/\s+/)[0]||""; }
@@ -1001,7 +1033,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     const urg=state.answers.q12&&state.answers.q12.k;
     const U={A:"Você disse que quer resolver isso esta semana. O primeiro passo é o curso — é ele que abre as soluções.",B:"Você quer resolver isso este mês. Comece pelo curso e chegue à implantação sabendo o que está contratando.",C:"Sem pressa: guarde este diagnóstico. Quando a dor apertar, o caminho já está mapeado."};
     $("res-urgency").textContent=U[urg]||"";
-    const tBox=$("res-tags"); tBox.innerHTML=""; tags.forEach(t=>{ const s=document.createElement("span"); s.className="tag"; s.textContent=t; tBox.appendChild(s); });
+    const tBox=$("res-tags"); tBox.innerHTML=""; tags.forEach(t=>{ const s=document.createElement("span"); s.className="tag"; s.textContent=(CATALOG[t]&&CATALOG[t].room)||t; tBox.appendChild(s); });
     const sBox=$("res-sols"); sBox.innerHTML="";
     sols.forEach((s,i)=>{ const d=document.createElement("div"); d.className="sol";
       d.innerHTML="<h3>"+s.nome+" <span style='color:var(--dado);font-family:JetBrains Mono,monospace;font-size:.72rem'>"+s.id+"</span></h3><p>"+s.desc+"</p><div class='price'>Mensalidade: sob consulta · exige curso R$ 97</div>";
@@ -1014,19 +1046,20 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     state.started=true; state.i=0; camZ=2.5; camZTo=2.5;
     show("screen-quiz"); setWake(1/12); triggerTravel(DOOR_STEP*0.92); renderQuestion();
   });
-  $("btn-back").addEventListener("click",()=>{ if(state.i>0){ state.i--; renderQuestion(); triggerTravel(-DOOR_STEP*0.92); }});
+  $("btn-back").addEventListener("click",()=>{ if(state.i>0){ state.i--; renderQuestion(); triggerTravel(-DOOR_STEP*0.92); $("q-text").focus(); }});
   $("btn-next").addEventListener("click",()=>{
     if(!canAdvance()) return;
     const q=QUESTIONS[state.i];
     if(q.type==="text"){ const ta=$("q-text-input"); state.answers[q.id]={text:(ta&&ta.value||"").slice(0,280)}; }
     setMoodFromTags(tagScores());
-    if(state.i < QUESTIONS.length-1){ state.i++; triggerTravel(DOOR_STEP*0.92); renderQuestion(); }
+    if(state.i < QUESTIONS.length-1){ state.i++; triggerTravel(DOOR_STEP*0.92); renderQuestion(); $("q-text").focus(); }
     else { triggerTravel(DOOR_STEP*1.1); show("screen-lead"); setWake(0.92); setTimeout(()=>$("lead-nome").focus(),250); }
   });
   $("btn-lead-back").addEventListener("click",()=>{ show("screen-quiz"); renderQuestion(); });
   $("lead-whatsapp").addEventListener("input",(e)=>maskWhatsApp(e.target));
   $("lead-form").addEventListener("submit",(e)=>{ e.preventDefault(); const lead=validateLeadForm(); if(!lead) return; unlockResultLocally(lead); });
   $("btn-restart").addEventListener("click",()=>{
+    clearQueue(); lastPayload=null;
     state.i=0; state.answers={}; state.started=false; state.lead=null; state.litRooms=[];
     camZ=2.5; camZTo=2.5; $("lead-form").reset();
     ["err-nome","err-whatsapp","err-email","err-consent"].forEach(id=>{$(id).hidden=true;$(id).textContent=""});
@@ -1054,7 +1087,7 @@ html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{tr
     getCam(){ return {camZ, traveling, camZFrom, camZTo, wake, hue, dens}; }
   };
 
-  applyMotionPref(); initTurnstile();
+  applyMotionPref(); pruneQueue(); initTurnstile();
   startFX(); setWake(0);
 })();
 </script>

@@ -1,3 +1,10 @@
+/* Fontes locais (sem Google Fonts: não envia IP do visitante a terceiros). 900→Bold e mono 700→Medium por falta de arquivo. */
+@font-face{font-family:"Unbounded";src:url("assets/fonts/Unbounded-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Unbounded";src:url("assets/fonts/Unbounded-Bold.ttf") format("truetype");font-weight:600 900;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/SpaceGrotesk-Bold.ttf") format("truetype");font-weight:600 900;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url("assets/fonts/JetBrainsMono-Medium.ttf") format("truetype");font-weight:400 900;font-display:swap}
 :root{--void:#07080A;--grafite:#121418;--linha:#262A31;--volt:#C8FF2E;--sinal:#F2F4EF;--dado:#8B929C;--brasa:#FF5A1F;
 --fd:"Unbounded",system-ui,sans-serif;--ft:"Space Grotesk",system-ui,sans-serif;--fm:"JetBrains Mono",ui-monospace,monospace;
 --ease:cubic-bezier(.2,.8,.2,1)}
